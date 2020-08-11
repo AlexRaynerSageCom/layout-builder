@@ -1,0 +1,20 @@
+:host {
+  display: block;
+}
+
+.grid {
+  padding: 16px;
+  height: 600px;
+
+  &__item {
+    width: 100%;
+    height: 100%;
+    font-weight: bold;
+    background-color: #008200;
+  }
+}
+
+.output-styles {
+  padding: 16px;
+  background-color: #F2F5F6;
+}

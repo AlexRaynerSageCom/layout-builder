@@ -1,1 +1,44 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
+
+input, button {
+  &:focus {
+    outline: 3px solid #ffb500;
+  }
+}
+
+input {
+  padding: 0px 11px;
+  line-height: 2.5em;
+  background-color: #fff;
+  border: 1px solid #668592;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+button {
+  cursor: pointer;
+  border-radius: 0;
+  display: inline-block;
+  padding: 0px 11px;
+  margin: 8px;
+  line-height: 2.5em;
+  border: 2px solid transparent;
+  background-color: #008200;
+  color: #fff;
+  font-weight: bold;
+
+  &:hover {
+    background-color: #006300;
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+    background-color: #e6ebed;
+    color: rgba(0, 0, 0, 0.3)
+  }
+}
