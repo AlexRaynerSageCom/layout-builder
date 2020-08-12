@@ -5,4 +5,8 @@
 .input-field {
   display: inline-block;
   padding: 8px;
+
+  label > * {
+    display: inline-block;
+  }
 }

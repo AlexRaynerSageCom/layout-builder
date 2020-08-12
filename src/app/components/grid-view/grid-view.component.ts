@@ -4,9 +4,9 @@ import { GridModel } from '../../models';
 @Component({
   selector: 'app-grid-view',
   template: `
-    <button (click)="getStyles()">
+    <sds-button (clickEvent)="getStyles()">
       Get Styles
-    </button>
+    </sds-button>
 
     <pre
       *ngIf="generatedStyles"
@@ -17,24 +17,54 @@ import { GridModel } from '../../models';
 &#125;
 </pre>
 
-    <div
-      #grid
-      id="grid"
-      class="grid"
-      [style]="styles"
-    >
+    <div class="grid-view">
+
       <div
-        class="grid__item"
-        *ngFor="let item of size"
+        *ngIf="grid.columns.length > 0"
+        class="columns"
+        [style]="columnStyles"
       >
-        ITEM
+        <div
+          *ngFor="let col of columnCount; let i = index"
+          tabIndex="0"
+          (click)="removeColumn(i)"
+        >
+          DELETE
+        </div>
+      </div>
+
+      <div
+        *ngIf="grid.rows.length > 0"
+        class="rows"
+        [style]="rowStyles"
+      >
+        <div
+          *ngFor="let row of rowCount; let i = index"
+          tabIndex="0"
+          (click)="removeRow(i)"
+        >
+          DELETE
+        </div>
+      </div>
+
+      <div
+        #gridElem
+        class="grid"
+        [style]="styles"
+      >
+        <ng-container *ngIf="grid?.fillGrid">
+          <div
+            *ngFor="let item of count"
+            class="grid__item"
+          ></div>
+        </ng-container>
       </div>
     </div>
   `,
   styleUrls: ['./grid-view.component.scss']
 })
 export class GridViewComponent implements AfterViewInit {
-  @ViewChild('grid') gridElem: ElementRef;
+  @ViewChild('gridElem') gridElem: ElementRef;
 
   @Input() grid: GridModel;
 
@@ -50,18 +80,44 @@ export class GridViewComponent implements AfterViewInit {
     this.generatedStyles = styles.replace(/; /g, ';\n    ');
   }
 
-  get size() {
-    return new Array(this.grid.columns * Math.max(1, this.grid.rows));
+  removeColumn(index: number) {
+    this.grid.columns.splice(index, 1);
+  }
+
+  removeRow(index: number) {
+    this.grid.rows.splice(index, 1);
+  }
+
+  get columnCount() {
+    return new Array(this.grid.columns.length);
+  }
+
+  get rowCount() {
+    return new Array(this.grid.rows.length);
+  }
+
+  get count() {
+    return new Array(this.grid.columns.length * Math.max(1, this.grid.rows.length));
+  }
+
+  get columnStyles() {
+    return {
+      gridTemplateColumns: this.grid.columns.map(column => `${column.size}${column.unit}`).join(' '),
+      gridColumnGap: this.grid.columnGap + 'px'
+    };
+  }
+
+  get rowStyles() {
+    return {
+      gridTemplateRows: this.grid.rows.map(row => `${row.size}${row.unit}`).join(' '),
+      gridRowGap: this.grid.rowGap + 'px'
+    };
   }
 
   get styles() {
-    const fr = '1fr ';
-
     return {
-      gridTemplateColumns: fr.repeat(this.grid.columns),
-      gridTemplateRows: fr.repeat(this.grid.rows),
-      gridColumnGap: this.grid.columnGap + 'px',
-      gridRowGap: this.grid.rowGap + 'px',
+      ...this.columnStyles,
+      ...this.rowStyles
     };
   }
 }

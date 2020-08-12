@@ -1,38 +1,24 @@
 import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { GridModel } from '../../models';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-builder-form',
   template: `
     <form class="builder-form" [formGroup]="form">
-      <button
+      <sds-button
         type="button"
-        (click)="updateColumns(grid.columns + 1)"
+        (clickEvent)="showColumnForm = true"
       >
         Add Column
-      </button>
-      <button
-        type="button"
-        [disabled]="grid.columns === 0"
-        (click)="updateColumns(grid.columns - 1)"
-      >
-        Remove Column
-      </button>
+      </sds-button>
 
-      <button
+      <sds-button
         type="button"
-        (click)="updateRows(grid.rows + 1)"
+        (clickEvent)="showRowForm = true"
       >
         Add Row
-      </button>
-      <button
-        type="button"
-        [disabled]="grid.rows === 0"
-        (click)="updateRows(grid.rows - 1)"
-      >
-        Remove Row
-      </button>
+      </sds-button>
 
       <div class="input-field">
         <label>
@@ -47,6 +33,81 @@ import { FormBuilder, FormGroup } from '@angular/forms';
           <input type="number" min="0" formControlName="rowGap"/>
         </label>
       </div>
+
+      <sds-checkbox
+        formControlName="fillGrid"
+        size="large"
+      >
+        Fill grid?
+      </sds-checkbox>
+    </form>
+
+    <form
+      *ngIf="showColumnForm"
+      [formGroup]="columnForm"
+      (ngSubmit)="addColumn()"
+    >
+      <div class="input-field">
+        <label>
+          New Column:
+          <sds-input-text
+            formControlName="size"
+            placeholderText="size.."
+            errorType="error"
+            [errors]="isFieldInvalid(columnForm, 'size')"
+          >
+          </sds-input-text>
+          <sds-dropdown
+            formControlName="unit"
+            placeholder="unit.."
+            errorType="error"
+            [errors]="isFieldInvalid(columnForm, 'unit')"
+          >
+            <sds-dropdown-option
+              *ngFor="let option of axisUnits"
+              [value]="option"
+            >
+              {{ option }}
+            </sds-dropdown-option>
+          </sds-dropdown>
+        </label>
+      </div>
+
+      <sds-button type="submit">Add</sds-button>
+    </form>
+
+    <form
+      *ngIf="showRowForm"
+      [formGroup]="rowForm"
+      (ngSubmit)="addRow()"
+    >
+      <div class="input-field">
+        <label>
+          New Row:
+          <sds-input-text
+            formControlName="size"
+            placeholderText="size.."
+            errorType="error"
+            [errors]="isFieldInvalid(rowForm, 'size')"
+          >
+          </sds-input-text>
+          <sds-dropdown
+            formControlName="unit"
+            placeholder="unit.."
+            errorType="error"
+            [errors]="isFieldInvalid(rowForm, 'unit')"
+          >
+            <sds-dropdown-option
+              *ngFor="let option of axisUnits"
+              [value]="option"
+            >
+              {{ option }}
+            </sds-dropdown-option>
+          </sds-dropdown>
+        </label>
+      </div>
+
+      <sds-button type="submit">Add</sds-button>
     </form>
   `,
   styleUrls: ['./builder-form.component.scss']
@@ -58,35 +119,101 @@ export class BuilderFormComponent implements OnInit {
   gridChanged: EventEmitter<GridModel> = new EventEmitter<GridModel>();
 
   form: FormGroup;
+  showColumnForm = false;
+  columnForm: FormGroup;
+  showRowForm = false;
+  rowForm: FormGroup;
+
+  axisUnits = [
+    'fr',
+    '%',
+    'px',
+    'auto'
+  ];
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     this.form = this.fb.group({
       columnGap: this.grid.columnGap,
-      rowGap: this.grid.rowGap
+      rowGap: this.grid.rowGap,
+      fillGrid: this.grid.fillGrid
     });
 
-    this.form.get('columnGap').valueChanges.subscribe(value => {
-      const newGrid = { ...this.grid, ...{ columnGap: value} };
-      this.gridChanged.emit(newGrid);
+    this.columnForm = this.fb.group({
+      size: ['', Validators.required],
+      unit: [null, Validators.required]
     });
 
-    this.form.get('rowGap').valueChanges.subscribe(value => {
-      const newGrid = { ...this.grid, ...{ rowGap: value} };
+    this.rowForm = this.fb.group({
+      size: ['', Validators.required],
+      unit: [null, Validators.required]
+    });
+
+    this.form.valueChanges.subscribe(value => {
+      const newGrid = { ...this.grid, ...value };
       this.gridChanged.emit(newGrid);
+      console.log(newGrid);
     });
   }
 
-  updateColumns(value: number) {
-    const newGrid = { ...this.grid, ...{ columns: value} };
-
-    this.gridChanged.emit(newGrid);
+  isFieldInvalid(form: FormGroup, field: string): string {
+    return form.get(field).touched && form.get(field).errors
+      ? 'This field is required.'
+      : null;
   }
 
-  updateRows(value: number) {
-    const newGrid = { ...this.grid, ...{ rows: value} };
+  addColumn() {
+    this.columnForm.markAllAsTouched();
+
+    if (!this.columnForm.valid) {
+      return;
+    }
+
+    const newColumn = {
+      size: this.columnForm.get('size').value,
+      unit: this.columnForm.get('unit').value
+    };
+
+    const newGrid = {
+      ...this.grid,
+      ...{
+        columns: [
+          ...this.grid.columns,
+          newColumn
+        ]
+      }
+    };
 
     this.gridChanged.emit(newGrid);
+    this.columnForm.reset();
+    this.showColumnForm = false;
+  }
+
+  addRow() {
+    this.rowForm.markAllAsTouched();
+
+    if (!this.rowForm.valid) {
+      return;
+    }
+
+    const newRow = {
+      size: this.rowForm.get('size').value,
+      unit: this.rowForm.get('unit').value
+    };
+
+    const newGrid = {
+      ...this.grid,
+      ...{
+        rows: [
+          ...this.grid.rows,
+          newRow
+        ]
+      }
+    };
+
+    this.gridChanged.emit(newGrid);
+    this.rowForm.reset();
+    this.showRowForm = false;
   }
 }

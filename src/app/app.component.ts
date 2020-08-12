@@ -11,6 +11,7 @@ import { GridModel, getInitialGrid } from './models';
         (gridChanged)="updateGrid($event)"
       >
       </app-builder-form>
+
       <app-grid-view [grid]="grid">
       </app-grid-view>
     </div>
