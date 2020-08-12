@@ -56,7 +56,7 @@ import { GridModel } from '../../models';
           <div
             *ngFor="let item of count"
             class="grid__item"
-          ></div>
+          >ITEM</div>
         </ng-container>
       </div>
     </div>
