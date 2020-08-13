@@ -1,4 +1,4 @@
-import { AxisModel } from './axis.model';
+import { AxisModel, getInitialAxis } from './axis.model';
 
 export interface GridModel {
   columns: AxisModel[];
@@ -10,8 +10,18 @@ export interface GridModel {
 
 export const getInitialGrid = (): GridModel => {
   return {
-    columns: [{ size: '1', unit: 'fr' }, { size: '1', unit: 'fr' }],
-    rows: [{ size: '1', unit: 'fr' }, { size: '1', unit: 'fr' }],
+    columns: [
+      getInitialAxis(),
+      getInitialAxis(),
+      getInitialAxis(),
+      getInitialAxis()
+    ],
+    rows: [
+      getInitialAxis(),
+      getInitialAxis(),
+      getInitialAxis(),
+      getInitialAxis()
+    ],
     columnGap: 10,
     rowGap: 10,
     fillGrid: true
