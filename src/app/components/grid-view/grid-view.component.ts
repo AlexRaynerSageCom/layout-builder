@@ -1,4 +1,16 @@
-import { Component, ViewChild, ElementRef, Input, AfterViewInit } from '@angular/core';
+// Angular
+import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+
+// ngrx
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app.state';
+import * as BuilderSelectors from '../../store/app.selector';
+
+// libs
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+
+// Models
 import { GridModel } from '../../models';
 
 @Component({
@@ -63,12 +75,23 @@ import { GridModel } from '../../models';
   `,
   styleUrls: ['./grid-view.component.scss']
 })
-export class GridViewComponent implements AfterViewInit {
+export class GridViewComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('gridElem') gridElem: ElementRef;
 
-  @Input() grid: GridModel;
-
+  grid: GridModel;
   generatedStyles: string;
+
+  unsubscribe$: Subject<void> = new Subject<void>();
+
+  constructor(private store: Store<AppState>) {}
+
+  ngOnInit() {
+    this.store.select(BuilderSelectors.selectGrid)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(grid => {
+        this.grid = grid;
+      });
+  }
 
   ngAfterViewInit() {
     this.gridElem.nativeElement.style.display = 'grid';
@@ -119,5 +142,10 @@ export class GridViewComponent implements AfterViewInit {
       ...this.columnStyles,
       ...this.rowStyles
     };
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

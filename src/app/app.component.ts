@@ -1,31 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { GridModel, getInitialGrid } from './models';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   template: `
-    <div>
-      <div class="text">Grid Layout Builder</div>
-      <app-builder-form
-        [grid]="grid"
-        (gridChanged)="updateGrid($event)"
-      >
-      </app-builder-form>
+    <app-sidebar>
+    </app-sidebar>
 
-      <app-grid-view [grid]="grid">
+    <div class="content">
+      <div class="title">Grid Layout Builder</div>
+
+      <app-grid-view>
       </app-grid-view>
     </div>
   `,
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
-  grid: GridModel;
-
-  ngOnInit() {
-    this.grid = getInitialGrid();
-  }
-
-  updateGrid(grid: GridModel) {
-    this.grid = grid;
-  }
-}
+export class AppComponent {}

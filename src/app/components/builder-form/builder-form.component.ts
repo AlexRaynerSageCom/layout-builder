@@ -153,7 +153,6 @@ export class BuilderFormComponent implements OnInit {
     this.form.valueChanges.subscribe(value => {
       const newGrid = { ...this.grid, ...value };
       this.gridChanged.emit(newGrid);
-      console.log(newGrid);
     });
   }
 

@@ -6,6 +6,8 @@ html, body {
   margin: 0;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
+  height: 100%;
+  width: 100%;
 }
 
 *:focus {
@@ -22,4 +24,10 @@ input {
 
 button {
   margin: 0 8px;
+}
+
+.heading {
+  font-size: 1.5em;
+  font-weight: bold;
+  padding: 16px 0;
 }
