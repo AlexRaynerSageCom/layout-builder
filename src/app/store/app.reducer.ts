@@ -54,7 +54,7 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
         grid: {
           ...state.grid,
           rows: [
-            ...state.grid.columns,
+            ...state.grid.rows,
             action.row
           ]
         }
