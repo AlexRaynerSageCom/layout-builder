@@ -2,7 +2,7 @@
 import { Action } from '@ngrx/store';
 
 // Models
-import { GridModel } from '../models';
+import { GridModel, AxisModel } from '../models';
 
 ////////////////////////////////////////////////////////////////////////////////
 // Update Grid
@@ -16,5 +16,57 @@ export class UpdateGrid implements Action {
   constructor(public grid: GridModel) {}
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// Add Column
+////////////////////////////////////////////////////////////////////////////////
+
+export const ADD_COLUMN = '[Builder] ADD_COLUMN';
+
+export class AddColumn implements Action {
+  readonly type = ADD_COLUMN;
+
+  constructor(public column: AxisModel) {}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Add Row
+////////////////////////////////////////////////////////////////////////////////
+
+export const ADD_ROW = '[Builder] ADD_ROW';
+
+export class AddRow implements Action {
+  readonly type = ADD_ROW;
+
+  constructor(public row: AxisModel) {}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Delete Column
+////////////////////////////////////////////////////////////////////////////////
+
+export const DELETE_COLUMN = '[Builder] DELETE_COLUMN';
+
+export class DeleteColumn implements Action {
+  readonly type = DELETE_COLUMN;
+
+  constructor(public position: number) {}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Delete Row
+////////////////////////////////////////////////////////////////////////////////
+
+export const DELETE_ROW = '[Builder] DELETE_ROW';
+
+export class DeleteRow implements Action {
+  readonly type = DELETE_ROW;
+
+  constructor(public position: number) {}
+}
+
 export type All =
-  UpdateGrid;
+  UpdateGrid
+  | AddColumn
+  | AddRow
+  | DeleteColumn
+  | DeleteRow;

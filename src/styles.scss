@@ -20,14 +20,22 @@ input {
   background-color: #fff;
   border: 1px solid #668592;
   box-sizing: border-box;
+
+  &[type="number"] {
+    width: 100%;
+  }
 }
 
 button {
-  margin: 0 8px;
+  margin-right: 8px;
 }
 
 .heading {
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-weight: bold;
-  padding: 16px 0;
+  margin-bottom: 16px;
+}
+
+.input-field {
+  padding: 8px 0;
 }

@@ -1,10 +1,11 @@
 // Angular
-import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 // ngrx
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.state';
 import * as BuilderSelectors from '../../store/app.selector';
+import { DeleteColumn, DeleteRow } from 'src/app/store/app.action';
 
 // libs
 import { takeUntil } from 'rxjs/operators';
@@ -16,21 +17,7 @@ import { GridModel } from '../../models';
 @Component({
   selector: 'app-grid-view',
   template: `
-    <sds-button (clickEvent)="getStyles()">
-      Get Styles
-    </sds-button>
-
-    <pre
-      *ngIf="generatedStyles"
-      class="output-styles"
-    >
-.grid &#123;
-    {{ generatedStyles }}
-&#125;
-</pre>
-
     <div class="grid-view">
-
       <div
         *ngIf="grid.columns.length > 0"
         class="columns"
@@ -60,7 +47,7 @@ import { GridModel } from '../../models';
       </div>
 
       <div
-        #gridElem
+        id="grid"
         class="grid"
         [style]="styles"
       >
@@ -68,18 +55,17 @@ import { GridModel } from '../../models';
           <div
             *ngFor="let item of count"
             class="grid__item"
-          >ITEM</div>
+          >
+            ITEM
+          </div>
         </ng-container>
       </div>
     </div>
   `,
   styleUrls: ['./grid-view.component.scss']
 })
-export class GridViewComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('gridElem') gridElem: ElementRef;
-
+export class GridViewComponent implements OnInit, OnDestroy {
   grid: GridModel;
-  generatedStyles: string;
 
   unsubscribe$: Subject<void> = new Subject<void>();
 
@@ -93,22 +79,12 @@ export class GridViewComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  ngAfterViewInit() {
-    this.gridElem.nativeElement.style.display = 'grid';
-  }
-
-  getStyles() {
-    const styles = this.gridElem.nativeElement.style.cssText;
-
-    this.generatedStyles = styles.replace(/; /g, ';\n    ');
-  }
-
   removeColumn(index: number) {
-    this.grid.columns.splice(index, 1);
+    this.store.dispatch(new DeleteColumn(index));
   }
 
   removeRow(index: number) {
-    this.grid.rows.splice(index, 1);
+    this.store.dispatch(new DeleteRow(index));
   }
 
   get columnCount() {
@@ -139,6 +115,7 @@ export class GridViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get styles() {
     return {
+      display: 'grid',
       ...this.columnStyles,
       ...this.rowStyles
     };

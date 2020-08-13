@@ -12,10 +12,14 @@ import { StoreModule } from '@ngrx/store';
 import { appReducers } from './store/app.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
+// Services
+import { FormsService } from './services';
+
 // Components
 import { AppComponent } from './app.component';
 import {
-  BuilderFormComponent,
+  AxisFormComponent,
+  GridFormComponent,
   GridViewComponent,
   SidebarComponent
 } from './components';
@@ -26,6 +30,7 @@ import { DropdownModule as CarbonDropdownModule } from '@sage/ng-carbon/dropdown
 import { InputTextModule as CarbonInputTextModule } from '@sage/ng-carbon/input-text';
 import { CheckboxModule as CarbonCheckboxModule } from '@sage/ng-carbon/checkbox';
 import { IconModule as CarbonIconModule } from '@sage/ng-carbon/icon';
+import { TabsModule as CarbonTabsModule } from '@sage/ng-carbon/tabs';
 
 @NgModule({
   imports: [
@@ -40,15 +45,19 @@ import { IconModule as CarbonIconModule } from '@sage/ng-carbon/icon';
     CarbonDropdownModule,
     CarbonInputTextModule,
     CarbonCheckboxModule,
-    CarbonIconModule
+    CarbonIconModule,
+    CarbonTabsModule
   ],
   declarations: [
     AppComponent,
-    BuilderFormComponent,
+    AxisFormComponent,
+    GridFormComponent,
     GridViewComponent,
     SidebarComponent
   ],
-  providers: [],
+  providers: [
+    FormsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

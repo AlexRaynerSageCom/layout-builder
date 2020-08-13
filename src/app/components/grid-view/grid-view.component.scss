@@ -1,8 +1,10 @@
 :host {
   display: block;
+  flex: 1
 }
 
 .grid-view {
+  height: calc(100% - 32px);
   padding: 16px;
   display: grid;
   grid-template-columns: auto 1fr;
@@ -37,7 +39,6 @@
 .grid {
   grid-column: 2;
   grid-row: 2;
-  height: 550px;
 
   &__item {
     width: 100%;
@@ -49,9 +50,4 @@
     align-items: center;
     justify-content: center;
   }
-}
-
-.output-styles {
-  padding: 16px;
-  background-color: #F2F5F6;
 }

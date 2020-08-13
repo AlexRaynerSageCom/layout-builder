@@ -20,7 +20,74 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
     case BuilderActions.UPDATE_GRID: {
       return {
         ...state,
-        grid: action.grid
+        grid: {
+          ...state.grid,
+          ...action.grid
+        }
+      };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Add Column
+    ////////////////////////////////////////////////////////////////////////////////
+
+    case BuilderActions.ADD_COLUMN: {
+      return {
+        ...state,
+        grid: {
+          ...state.grid,
+          columns: [
+            ...state.grid.columns,
+            action.column
+          ]
+        }
+      };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Add Row
+    ////////////////////////////////////////////////////////////////////////////////
+
+    case BuilderActions.ADD_ROW: {
+      return {
+        ...state,
+        grid: {
+          ...state.grid,
+          rows: [
+            ...state.grid.columns,
+            action.row
+          ]
+        }
+      };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Delete Column
+    ////////////////////////////////////////////////////////////////////////////////
+
+    case BuilderActions.DELETE_COLUMN: {
+      return {
+        ...state,
+        grid: {
+          ...state.grid,
+          columns: state.grid.columns
+            .filter((column, index) => action.position !== index)
+        }
+      };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Delete Row
+    ////////////////////////////////////////////////////////////////////////////////
+
+    case BuilderActions.DELETE_ROW: {
+      return {
+        ...state,
+        grid: {
+          ...state.grid,
+          rows: state.grid.rows
+            .filter((row, index) => action.position !== index)
+        }
       };
     }
 
