@@ -11,8 +11,12 @@ import { DeleteColumn, DeleteRow } from 'src/app/store/app.action';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
+// Components
+import { EditAxisDialogComponent } from '../edit-axis-dialog/edit-axis-dialog.component';
+
 // Models
 import { GridModel } from '../../models';
+import { DialogService } from '@sage/ng-carbon/dialog';
 
 @Component({
   selector: 'app-grid-view',
@@ -26,9 +30,9 @@ import { GridModel } from '../../models';
         <div
           *ngFor="let col of columnCount; let i = index"
           tabIndex="0"
-          (click)="removeColumn(i)"
+          (click)="editAxis(i, 'column')"
         >
-          DELETE
+          EDIT
         </div>
       </div>
 
@@ -40,9 +44,9 @@ import { GridModel } from '../../models';
         <div
           *ngFor="let row of rowCount; let i = index"
           tabIndex="0"
-          (click)="removeRow(i)"
+          (click)="editAxis(i, 'row')"
         >
-          DELETE
+          EDIT
         </div>
       </div>
 
@@ -69,7 +73,9 @@ export class GridViewComponent implements OnInit, OnDestroy {
 
   unsubscribe$: Subject<void> = new Subject<void>();
 
-  constructor(private store: Store<AppState>) {}
+  constructor(
+    private store: Store<AppState>,
+    private dialogService: DialogService) {}
 
   ngOnInit() {
     this.store.select(BuilderSelectors.selectGrid)
@@ -77,6 +83,26 @@ export class GridViewComponent implements OnInit, OnDestroy {
       .subscribe(grid => {
         this.grid = grid;
       });
+  }
+
+  editAxis(index: number, axisType: 'column' | 'row') {
+    this.dialogService.open(EditAxisDialogComponent, {
+      size: 'medium-small',
+      showCloseIcon: true,
+      data: {
+        axis: this.grid[`${axisType}s`][index],
+        axisType,
+        position: index
+      }
+    }).onClosed.subscribe(result => {
+      if (result === 'Delete') {
+        if (axisType === 'column') {
+          this.removeColumn(index);
+        } else {
+          this.removeRow(index);
+        }
+      }
+    });
   }
 
   removeColumn(index: number) {

@@ -36,7 +36,18 @@ import { FormGroup } from '@angular/forms';
         </sds-dropdown>
       </div>
 
-      <sds-button type="submit">Add</sds-button>
+      <sds-button
+        *ngIf="showDeleteButton"
+        buttonType="tertiary"
+        [destructive]="true"
+        (clickEvent)="remove()"
+      >
+        Remove
+      </sds-button>
+
+      <sds-button type="submit">
+        {{ showDeleteButton ? 'Update' : 'Add' }}
+      </sds-button>
     </form>
   `,
   styleUrls: ['./axis-form.component.scss']
@@ -45,8 +56,14 @@ export class AxisFormComponent {
   @Input()
   axisForm: FormGroup;
 
+  @Input()
+  showDeleteButton = false;
+
   @Output()
   axisAdded: EventEmitter<void> = new EventEmitter<void>();
+
+  @Output()
+  axisRemoved: EventEmitter<void> = new EventEmitter<void>();
 
   axisUnits = [
     'fr',
@@ -63,6 +80,10 @@ export class AxisFormComponent {
     }
 
     this.axisAdded.emit();
+  }
+
+  remove() {
+    this.axisRemoved.emit();
   }
 
   isFieldInvalid(form: FormGroup, field: string): string {

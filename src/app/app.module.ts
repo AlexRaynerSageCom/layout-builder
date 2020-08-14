@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -19,6 +20,7 @@ import { FormsService } from './services';
 import { AppComponent } from './app.component';
 import {
   AxisFormComponent,
+  EditAxisDialogComponent,
   GridFormComponent,
   GridViewComponent,
   SidebarComponent
@@ -31,6 +33,7 @@ import { InputTextModule as CarbonInputTextModule } from '@sage/ng-carbon/input-
 import { CheckboxModule as CarbonCheckboxModule } from '@sage/ng-carbon/checkbox';
 import { IconModule as CarbonIconModule } from '@sage/ng-carbon/icon';
 import { TabsModule as CarbonTabsModule } from '@sage/ng-carbon/tabs';
+import { DialogModule as CarbonDialogModule } from '@sage/ng-carbon/dialog';
 
 @NgModule({
   imports: [
@@ -39,6 +42,7 @@ import { TabsModule as CarbonTabsModule } from '@sage/ng-carbon/tabs';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
     StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({maxAge: 20}),
     CarbonButtonModule,
@@ -46,11 +50,13 @@ import { TabsModule as CarbonTabsModule } from '@sage/ng-carbon/tabs';
     CarbonInputTextModule,
     CarbonCheckboxModule,
     CarbonIconModule,
-    CarbonTabsModule
+    CarbonTabsModule,
+    CarbonDialogModule
   ],
   declarations: [
     AppComponent,
     AxisFormComponent,
+    EditAxisDialogComponent,
     GridFormComponent,
     GridViewComponent,
     SidebarComponent
@@ -60,4 +66,4 @@ import { TabsModule as CarbonTabsModule } from '@sage/ng-carbon/tabs';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

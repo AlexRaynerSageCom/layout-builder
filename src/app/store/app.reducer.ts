@@ -62,6 +62,42 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
     }
 
     ////////////////////////////////////////////////////////////////////////////////
+    // Update Column
+    ////////////////////////////////////////////////////////////////////////////////
+
+    case BuilderActions.UPDATE_COLUMN: {
+      return {
+        ...state,
+        grid: {
+          ...state.grid,
+          columns: state.grid.columns.map((column, index) => {
+            return action.column.index === index
+              ? action.column.axis
+              : column;
+          })
+        }
+      };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Update Row
+    ////////////////////////////////////////////////////////////////////////////////
+
+    case BuilderActions.UPDATE_ROW: {
+      return {
+        ...state,
+        grid: {
+          ...state.grid,
+          rows: state.grid.rows.map((row, index) => {
+            return action.row.index === index
+              ? action.row.axis
+              : row;
+          })
+        }
+      };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
     // Delete Column
     ////////////////////////////////////////////////////////////////////////////////
 
