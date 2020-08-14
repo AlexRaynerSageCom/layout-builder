@@ -20,7 +20,6 @@ import { FormsService } from './services';
 import { AppComponent } from './app.component';
 import {
   AxisFormComponent,
-  EditAxisDialogComponent,
   GridFormComponent,
   GridViewComponent,
   SidebarComponent
@@ -34,6 +33,9 @@ import { CheckboxModule as CarbonCheckboxModule } from '@sage/ng-carbon/checkbox
 import { IconModule as CarbonIconModule } from '@sage/ng-carbon/icon';
 import { TabsModule as CarbonTabsModule } from '@sage/ng-carbon/tabs';
 import { DialogModule as CarbonDialogModule } from '@sage/ng-carbon/dialog';
+
+// Pipes
+import { CamelToKebabPipe } from './pipes';
 
 @NgModule({
   imports: [
@@ -54,12 +56,15 @@ import { DialogModule as CarbonDialogModule } from '@sage/ng-carbon/dialog';
     CarbonDialogModule
   ],
   declarations: [
+    // Components
     AppComponent,
     AxisFormComponent,
-    EditAxisDialogComponent,
     GridFormComponent,
     GridViewComponent,
-    SidebarComponent
+    SidebarComponent,
+
+    // Pipes
+    CamelToKebabPipe
   ],
   providers: [
     FormsService

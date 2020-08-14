@@ -12,12 +12,12 @@ export class FormsService {
       columnGap: grid.columnGap,
       rowGap: grid.rowGap,
       fillGrid: grid.fillGrid,
-      // columns: this.formBuilder.array([
-      //   ...grid.columns.map(column => this.createAxisForm(column))
-      // ]),
-      // rows: this.formBuilder.array([
-      //   ...grid.rows.map(row => this.createAxisForm(row))
-      // ])
+      columns: this.formBuilder.array([
+        ...grid.columns.map(column => this.createAxisForm(column))
+      ]),
+      rows: this.formBuilder.array([
+        ...grid.rows.map(row => this.createAxisForm(row))
+      ])
     });
   }
 

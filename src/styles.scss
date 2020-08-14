@@ -28,6 +28,14 @@ input {
 
 button {
   margin-right: 8px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+pre {
+  display: flex;
 }
 
 .heading {
@@ -36,6 +44,11 @@ button {
   margin-bottom: 16px;
 }
 
+.sub-heading {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
 .input-field {
-  padding: 8px 0;
+  padding-bottom: 8px;
 }

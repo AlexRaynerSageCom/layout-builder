@@ -1,6 +1,6 @@
 // Angular
 import { Component, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-grid-form',
@@ -9,6 +9,20 @@ import { FormGroup } from '@angular/forms';
       *ngIf="gridForm"
       [formGroup]="gridForm"
     >
+      <div class="sub-heading">Columns:</div>
+      <app-axis-form
+        *ngFor="let axisForm of columnForms.controls"
+        [axisForm]="axisForm"
+      >
+      </app-axis-form>
+
+      <div class="sub-heading">Rows:</div>
+      <app-axis-form
+        *ngFor="let axisForm of rowForms.controls"
+        [axisForm]="axisForm"
+      >
+      </app-axis-form>
+
       <div class="input-field">
         <label>
           Column Gap (px):
@@ -38,4 +52,12 @@ import { FormGroup } from '@angular/forms';
 export class GridFormComponent {
   @Input()
   gridForm: FormGroup;
+
+  get columnForms() {
+    return this.gridForm.get('columns') as FormArray;
+  }
+
+  get rowForms() {
+    return this.gridForm.get('rows') as FormArray;
+  }
 }

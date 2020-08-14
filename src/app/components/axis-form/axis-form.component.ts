@@ -7,8 +7,8 @@ import { FormGroup } from '@angular/forms';
   template: `
     <form
       *ngIf="axisForm"
+      class="axis-form"
       [formGroup]="axisForm"
-      (ngSubmit)="addAxis()"
     >
       <div class="input-field">
         <sds-input-text
@@ -37,16 +37,11 @@ import { FormGroup } from '@angular/forms';
       </div>
 
       <sds-button
-        *ngIf="showDeleteButton"
         buttonType="tertiary"
         [destructive]="true"
         (clickEvent)="remove()"
       >
-        Remove
-      </sds-button>
-
-      <sds-button type="submit">
-        {{ showDeleteButton ? 'Update' : 'Add' }}
+        <sds-icon iconType="close"></sds-icon>
       </sds-button>
     </form>
   `,
@@ -55,12 +50,6 @@ import { FormGroup } from '@angular/forms';
 export class AxisFormComponent {
   @Input()
   axisForm: FormGroup;
-
-  @Input()
-  showDeleteButton = false;
-
-  @Output()
-  axisAdded: EventEmitter<void> = new EventEmitter<void>();
 
   @Output()
   axisRemoved: EventEmitter<void> = new EventEmitter<void>();
@@ -71,16 +60,6 @@ export class AxisFormComponent {
     'px',
     'auto'
   ];
-
-  addAxis() {
-    this.axisForm.markAllAsTouched();
-
-    if (!this.axisForm.valid) {
-      return;
-    }
-
-    this.axisAdded.emit();
-  }
 
   remove() {
     this.axisRemoved.emit();
