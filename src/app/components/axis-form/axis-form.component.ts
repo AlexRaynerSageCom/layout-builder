@@ -2,6 +2,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
+// Models
+import { Units } from '../../models';
+
 @Component({
   selector: 'app-axis-form',
   template: `
@@ -10,33 +13,47 @@ import { FormGroup } from '@angular/forms';
       class="axis-form"
       [formGroup]="axisForm"
     >
-      <div class="input-field">
+      <ng-container *ngIf="showSizeInput">
         <sds-input-text
+          *ngIf="axisForm.get('unit').value === 'minmax'; else numberInput"
+          class="axis-form__size"
           formControlName="size"
-          placeholderText="size.."
+          placeholderText="min, max"
           errorType="error"
           [errors]="isFieldInvalid(axisForm, 'size')"
         >
         </sds-input-text>
-      </div>
 
-      <div class="input-field">
-        <sds-dropdown
-          formControlName="unit"
-          placeholder="unit.."
-          errorType="error"
-          [errors]="isFieldInvalid(axisForm, 'unit')"
+        <ng-template #numberInput>
+          <input
+            class="axis-form__size"
+            [class.input-error]="isFieldInvalid(axisForm, 'size')"
+            type="number"
+            placeholder="size"
+            min="0"
+            formControlName="size"
+          />
+        </ng-template>
+      </ng-container>
+
+      <sds-dropdown
+        class="axis-form__unit"
+        [class.axis-form__unit--stretch]="!showSizeInput"
+        formControlName="unit"
+        placeholder="unit"
+        errorType="error"
+        [errors]="isFieldInvalid(axisForm, 'unit')"
+      >
+        <sds-dropdown-option
+          *ngFor="let option of axisUnits"
+          [value]="option"
         >
-          <sds-dropdown-option
-            *ngFor="let option of axisUnits"
-            [value]="option"
-          >
-            {{ option }}
-          </sds-dropdown-option>
-        </sds-dropdown>
-      </div>
+          {{ option }}
+        </sds-dropdown-option>
+      </sds-dropdown>
 
       <sds-button
+        class="axis-form__delete"
         buttonType="tertiary"
         [destructive]="true"
         (clickEvent)="remove()"
@@ -54,12 +71,13 @@ export class AxisFormComponent {
   @Output()
   axisRemoved: EventEmitter<void> = new EventEmitter<void>();
 
-  axisUnits = [
-    'fr',
-    '%',
-    'px',
-    'auto'
-  ];
+  axisUnits = Units;
+
+  get showSizeInput() {
+    return !['auto', 'min-content', 'max-content'].includes(
+      this.axisForm.get('unit').value
+    );
+  }
 
   remove() {
     this.axisRemoved.emit();

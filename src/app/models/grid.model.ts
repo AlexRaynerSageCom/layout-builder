@@ -22,8 +22,8 @@ export const getInitialGrid = (): GridModel => {
       getInitialAxis(),
       getInitialAxis()
     ],
-    columnGap: 10,
-    rowGap: 10,
+    columnGap: 1,
+    rowGap: 1,
     fillGrid: true
   };
 };

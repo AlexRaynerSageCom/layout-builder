@@ -8,6 +8,7 @@ html, body {
   font-size: 14px;
   height: 100%;
   width: 100%;
+  background-color: var(--color-primary);
 }
 
 *:focus {
@@ -16,7 +17,7 @@ html, body {
 
 input {
   padding: 0px 11px;
-  line-height: 2.5em;
+  height: 40px;
   background-color: #fff;
   border: 1px solid #668592;
   box-sizing: border-box;
@@ -51,4 +52,12 @@ pre {
 
 .input-field {
   padding-bottom: 8px;
+}
+
+.input-error {
+  border: 2px solid var(--color-error);
+}
+
+.axis-form .sds-button--destructive {
+  padding: 0 8px !important;
 }

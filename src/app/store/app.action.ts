@@ -2,7 +2,7 @@
 import { Action } from '@ngrx/store';
 
 // Models
-import { GridModel, AxisModel } from '../models';
+import { GridModel } from '../models';
 
 ////////////////////////////////////////////////////////////////////////////////
 // Update Grid
@@ -16,83 +16,5 @@ export class UpdateGrid implements Action {
   constructor(public grid: GridModel) {}
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// Add Column
-////////////////////////////////////////////////////////////////////////////////
-
-export const ADD_COLUMN = '[Builder] ADD_COLUMN';
-
-export class AddColumn implements Action {
-  readonly type = ADD_COLUMN;
-
-  constructor(public column: AxisModel) {}
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Add Row
-////////////////////////////////////////////////////////////////////////////////
-
-export const ADD_ROW = '[Builder] ADD_ROW';
-
-export class AddRow implements Action {
-  readonly type = ADD_ROW;
-
-  constructor(public row: AxisModel) {}
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Update Column
-////////////////////////////////////////////////////////////////////////////////
-
-export const UPDATE_COLUMN = '[Builder] UPDATE_COLUMN';
-
-export class UpdateColumn implements Action {
-  readonly type = UPDATE_COLUMN;
-
-  constructor(public column: {index: number, axis: AxisModel}) {}
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Update Column
-////////////////////////////////////////////////////////////////////////////////
-
-export const UPDATE_ROW = '[Builder] UPDATE_ROW';
-
-export class UpdateRow implements Action {
-  readonly type = UPDATE_ROW;
-
-  constructor(public row: {index: number, axis: AxisModel}) {}
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Delete Column
-////////////////////////////////////////////////////////////////////////////////
-
-export const DELETE_COLUMN = '[Builder] DELETE_COLUMN';
-
-export class DeleteColumn implements Action {
-  readonly type = DELETE_COLUMN;
-
-  constructor(public position: number) {}
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Delete Row
-////////////////////////////////////////////////////////////////////////////////
-
-export const DELETE_ROW = '[Builder] DELETE_ROW';
-
-export class DeleteRow implements Action {
-  readonly type = DELETE_ROW;
-
-  constructor(public position: number) {}
-}
-
 export type All =
-  UpdateGrid
-  | AddColumn
-  | AddRow
-  | UpdateColumn
-  | UpdateRow
-  | DeleteColumn
-  | DeleteRow;
+  UpdateGrid;

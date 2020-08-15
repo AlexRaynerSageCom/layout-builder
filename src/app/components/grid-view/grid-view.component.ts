@@ -21,14 +21,10 @@ import { GridModel } from '../../models';
       class="grid"
       [style]="styles$ | async"
     >
-      <ng-container *ngIf="grid?.fillGrid">
-        <div
-          *ngFor="let item of count"
-          class="grid__item"
-        >
-          ITEM
-        </div>
-      </ng-container>
+      <div
+        *ngFor="let item of count"
+        class="grid__item"
+      ></div>
     </div>
   `,
   styleUrls: ['./grid-view.component.scss']

@@ -1,6 +1,6 @@
 // Angular
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormArray } from '@angular/forms';
 
 // Services
 import { FormsService } from './services';
@@ -9,7 +9,7 @@ import { FormsService } from './services';
 import { Store } from '@ngrx/store';
 import { AppState } from './store/app.state';
 import * as BuilderSelectors from './store/app.selector';
-import { UpdateGrid, AddColumn, AddRow } from './store/app.action';
+import { UpdateGrid } from './store/app.action';
 
 // rxjs
 import { take } from 'rxjs/operators';
@@ -19,17 +19,19 @@ import { Observable } from 'rxjs';
   selector: 'app-root',
   template: `
     <app-sidebar>
-      <div class="heading">Configuration</div>
-
-      <app-grid-form [gridForm]="gridForm">
-      </app-grid-form>
-    </app-sidebar>
-
-    <div class="content">
       <div class="title">
         Grid Layout Builder
       </div>
 
+      <app-grid-form
+        [gridForm]="gridForm"
+        (columnAdded)="addColumn()"
+        (rowAdded)="addRow()"
+      >
+      </app-grid-form>
+    </app-sidebar>
+
+    <div class="content">
       <app-grid-view>
       </app-grid-view>
     </div>
@@ -86,18 +88,19 @@ export class AppComponent implements OnInit {
   }
 
   addColumn() {
-    this.store.dispatch(
-      new AddColumn(this.columnForm.value)
-    );
-    this.columnForm.reset();
+    const columnForms = this.gridForm.get('columns') as FormArray;
+
+    columnForms.push(this.formsService.createAxisForm(
+      { size: '1', unit: 'fr' }
+    ));
   }
 
   addRow() {
-    this.store.dispatch(
-      new AddRow(this.rowForm.value)
-    );
-    this.rowForm.reset();
+    const rowForms = this.gridForm.get('rows') as FormArray;
+
+    rowForms.push(this.formsService.createAxisForm(
+      { size: '1', unit: 'fr' }
+    ));
   }
 
 }
-

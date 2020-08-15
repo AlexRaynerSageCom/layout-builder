@@ -1,11 +1,22 @@
 .axis-form {
-  display: flex;
+  display: grid;
+  margin-bottom: 8px;
+  grid-template-columns: 85px auto 34px;
+  grid-column-gap: 8px;
 
-  > * {
-    margin-right: 8px;
+  &__size {
+    grid-column: 1;
+  }
 
-    &:last-child {
-      margin-right: 0;
+  &__unit {
+    grid-column: 2;
+
+    &--stretch {
+      grid-column: 1 / span 2;
     }
+  }
+
+  &__delete {
+    grid-column: 3;
   }
 }
