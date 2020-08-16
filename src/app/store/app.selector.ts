@@ -10,6 +10,11 @@ export const selectGrid = createSelector(
   (state: BuilderState) => state.grid
 );
 
+export const selectGridItems = createSelector(
+  selectGrid,
+  (grid: GridModel) => grid.items
+);
+
 const createAxisTemplateStyle = (axis: AxisModel) => {
   switch (axis.unit) {
     case 'auto':
@@ -52,15 +57,16 @@ export const selectGridStyle = createSelector(
 
 export const selectHTML = createSelector(
   selectGrid,
-  (grid: GridModel) => {
-    return `<div class="grid-container">
-</div>`;
-  }
-);
+  selectGridItems,
+  (grid: GridModel, items: GridItemModel[]) => {
+    let html = `<div class="grid-container">`;
 
-export const selectGridItems = createSelector(
-  selectGrid,
-  (grid: GridModel) => grid.items
+    items.forEach((item, index) => {
+      html += `\n  <div class="item-${index}"></div>`;
+    });
+
+    return html += `\n</div>`;
+  }
 );
 
 export const selectGridItemStyles = createSelector(

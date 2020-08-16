@@ -46,7 +46,7 @@ export class GridViewComponent implements OnInit, OnDestroy {
   grid: GridModel;
 
   styles$: Observable<{[key: string]: any}> =
-   this.store.select(BuilderSelectors.selectGridStyle);
+    this.store.select(BuilderSelectors.selectGridStyle);
 
   itemStyles: {[key: string]: any}[];
 

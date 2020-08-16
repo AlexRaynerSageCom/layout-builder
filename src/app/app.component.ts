@@ -44,8 +44,13 @@ import { getInitialGrid, GridModel } from './models';
         <div class="generated-styles">.grid-container &#123;
 <span
   *ngFor="let style of (styles$ | async) | keyvalue"
-  class="css-style"
 >  {{ style.key | camelToKebab }}: {{ style.value }};
+</span><span
+  *ngFor="let itemStyle of (itemStyles$ | async); let i = index"
+>
+  .item-{{ i }} &#123;
+    grid-area: {{ itemStyle.gridArea }};
+  &#125;
 </span>&#125;</div>
       </pre>
 
@@ -68,8 +73,11 @@ export class AppComponent implements OnInit {
   styles$: Observable<{[key: string]: any}> =
     this.store.select(BuilderSelectors.selectGridStyle);
 
+  itemStyles$: Observable<{[key: string]: any}[]> =
+    this.store.select(BuilderSelectors.selectGridItemStyles);
+
   html$: Observable<string> =
-   this.store.select(BuilderSelectors.selectHTML);
+    this.store.select(BuilderSelectors.selectHTML);
 
   constructor(
     private store: Store<AppState>,
