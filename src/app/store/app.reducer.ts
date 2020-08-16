@@ -27,6 +27,34 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
       };
     }
 
+    ////////////////////////////////////////////////////////////////////////////////
+    // Reset Grid
+    ////////////////////////////////////////////////////////////////////////////////
+
+    case BuilderActions.RESET_GRID: {
+      return {
+        ...state,
+        grid: action.grid
+      };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Add Grid Item
+    ////////////////////////////////////////////////////////////////////////////////
+
+    case BuilderActions.ADD_GRID_ITEM: {
+      return {
+        ...state,
+        grid: {
+          ...state.grid,
+          items: [
+            ...state.grid.items,
+            action.gridItem
+          ]
+        }
+      };
+    }
+
     default: {
       return state;
     }

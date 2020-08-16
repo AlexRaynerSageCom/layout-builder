@@ -64,6 +64,7 @@ import { Units } from '../../models';
   `,
   styleUrls: ['./axis-form.component.scss']
 })
+// TODO: need to set a default minmax when selected
 export class AxisFormComponent {
   @Input()
   axisForm: FormGroup;

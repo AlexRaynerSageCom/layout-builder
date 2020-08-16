@@ -1,11 +1,13 @@
 import { AxisModel, getInitialAxis } from './axis.model';
+import { AxisGapModel, getInitialAxisGap } from './axis-gap.model';
+import { GridItemModel } from './grid-item.model';
 
 export interface GridModel {
   columns: AxisModel[];
   rows: AxisModel[];
-  columnGap: number;
-  rowGap: number;
-  fillGrid: boolean;
+  columnGap: AxisGapModel;
+  rowGap: AxisGapModel;
+  items: GridItemModel[];
 }
 
 export const getInitialGrid = (): GridModel => {
@@ -22,8 +24,8 @@ export const getInitialGrid = (): GridModel => {
       getInitialAxis(),
       getInitialAxis()
     ],
-    columnGap: 1,
-    rowGap: 1,
-    fillGrid: true
+    columnGap: getInitialAxisGap(),
+    rowGap: getInitialAxisGap(),
+    items: []
   };
 };

@@ -2,7 +2,7 @@
 import { Action } from '@ngrx/store';
 
 // Models
-import { GridModel } from '../models';
+import { GridModel, GridItemModel } from '../models';
 
 ////////////////////////////////////////////////////////////////////////////////
 // Update Grid
@@ -16,5 +16,31 @@ export class UpdateGrid implements Action {
   constructor(public grid: GridModel) {}
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// Reset Grid
+////////////////////////////////////////////////////////////////////////////////
+
+export const RESET_GRID = '[Builder] RESET_GRID';
+
+export class ResetGrid implements Action {
+  readonly type = RESET_GRID;
+
+  constructor(public grid: GridModel) {}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Add Grid Item
+////////////////////////////////////////////////////////////////////////////////
+
+export const ADD_GRID_ITEM = '[Builder] ADD_GRID_ITEM';
+
+export class AddGridItem implements Action {
+  readonly type = ADD_GRID_ITEM;
+
+  constructor(public gridItem: GridItemModel) {}
+}
+
 export type All =
-  UpdateGrid;
+  UpdateGrid
+  | ResetGrid
+  | AddGridItem;

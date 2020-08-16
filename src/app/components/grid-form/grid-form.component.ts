@@ -1,6 +1,7 @@
 // Angular
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
+import { GapUnits } from '../../models';
 
 @Component({
   selector: 'app-grid-form',
@@ -40,19 +41,13 @@ import { FormGroup, FormArray } from '@angular/forms';
       >
       </app-axis-form>
 
-      <div class="input-field">
-        <label>
-          Column Gap (px):
-          <input type="number" min="0" formControlName="columnGap"/>
-        </label>
-      </div>
+      <div class="sub-heading">Column Gap:</div>
+      <app-axis-gap-form [axisGapForm]="gridForm.get('columnGap')">
+      </app-axis-gap-form>
 
-      <div class="input-field">
-        <label>
-          Row Gap (px):
-          <input type="number" min="0" formControlName="rowGap"/>
-        </label>
-      </div>
+      <div class="sub-heading">Row Gap:</div>
+      <app-axis-gap-form [axisGapForm]="gridForm.get('rowGap')">
+      </app-axis-gap-form>
     </form>
   `,
   styleUrls: ['./grid-form.component.scss']

@@ -1,7 +1,7 @@
 // ngrx
 import { createSelector } from '@ngrx/store';
 import { AppState, BuilderState } from './app.state';
-import { GridModel, AxisModel } from '../models';
+import { GridModel, AxisModel, GridItemModel } from '../models';
 
 export const selectBuilder = (state: AppState) => state.app;
 
@@ -28,15 +28,24 @@ const createAxisTemplateStyle = (axis: AxisModel) => {
   }
 };
 
+// TODO: make this a service/utils of some type
 export const selectGridStyle = createSelector(
   selectGrid,
   (grid: GridModel) => {
     return {
       display: 'grid',
-      gridTemplateColumns: grid.columns.map(column => createAxisTemplateStyle(column)).join(' '),
-      gridColumnGap: grid.columnGap + 'px',
-      gridTemplateRows: grid.rows.map(row => createAxisTemplateStyle(row)).join(' '),
-      gridRowGap: grid.rowGap + 'px'
+      ...(grid.columns.length > 0
+        ? {gridTemplateColumns: grid.columns.map(column => createAxisTemplateStyle(column)).join(' ')}
+        : {}),
+      ...(grid.columnGap.size > 0
+        ? {gridColumnGap: `${grid.columnGap.size}${grid.columnGap.unit}`}
+        : {}),
+      ...(grid.rows.length > 0
+        ? {gridTemplateRows: grid.rows.map(row => createAxisTemplateStyle(row)).join(' ')}
+        : {}),
+      ...(grid.rowGap.size > 0
+        ? {gridRowGap: `${grid.rowGap.size}${grid.rowGap.unit}`}
+        : {})
     };
   }
 );
@@ -46,5 +55,21 @@ export const selectHTML = createSelector(
   (grid: GridModel) => {
     return `<div class="grid-container">
 </div>`;
+  }
+);
+
+export const selectGridItems = createSelector(
+  selectGrid,
+  (grid: GridModel) => grid.items
+);
+
+export const selectGridItemStyles = createSelector(
+  selectGridItems,
+  (gridItems: GridItemModel[]) => {
+    return gridItems.map(item => {
+      return {
+        gridArea: `${item.rowStart} / ${item.columnStart} / ${item.rowEnd} / ${item.columnEnd}`
+      };
+    });
   }
 );

@@ -20,6 +20,7 @@ import { FormsService } from './services';
 import { AppComponent } from './app.component';
 import {
   AxisFormComponent,
+  AxisGapFormComponent,
   GridFormComponent,
   GridViewComponent,
   SidebarComponent
@@ -59,6 +60,7 @@ import { CamelToKebabPipe } from './pipes';
     // Components
     AppComponent,
     AxisFormComponent,
+    AxisGapFormComponent,
     GridFormComponent,
     GridViewComponent,
     SidebarComponent,

@@ -16,6 +16,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 
     &::before {
       content: "";
@@ -31,6 +32,15 @@
 
     &:hover {
       background-color: var(--color-slate-95);
+
+      .grid__item--add {
+        display: block;
+      }
+    }
+
+    &--add {
+      font-size: 1.4em;
+      display: none;
     }
   }
 }

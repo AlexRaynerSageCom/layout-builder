@@ -9,9 +9,14 @@ export class FormsService {
 
   createGridForm(grid: GridModel): FormGroup {
     return this.formBuilder.group({
-      columnGap: grid.columnGap,
-      rowGap: grid.rowGap,
-      fillGrid: grid.fillGrid,
+      columnGap: this.formBuilder.group({
+        size: grid.columnGap.size,
+        unit: grid.columnGap.unit
+      }),
+      rowGap: this.formBuilder.group({
+        size: grid.rowGap.size,
+        unit: grid.rowGap.unit
+      }),
       columns: this.formBuilder.array([
         ...grid.columns.map(column => this.createAxisForm(column))
       ]),
