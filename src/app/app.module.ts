@@ -5,9 +5,6 @@ import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// Modules
-import { AppRoutingModule } from './app-routing.module';
-
 // ngrx
 import { StoreModule } from '@ngrx/store';
 import { appReducers } from './store/app.reducer';
@@ -21,7 +18,6 @@ import { AppComponent } from './app.component';
 import {
   AxisFormComponent,
   AxisGapFormComponent,
-  GridItemComponent,
   GridFormComponent,
   GridViewComponent,
   SidebarComponent
@@ -43,7 +39,6 @@ import { CamelToKebabPipe } from './pipes';
   imports: [
     BrowserModule,
     CommonModule,
-    AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
@@ -62,7 +57,6 @@ import { CamelToKebabPipe } from './pipes';
     AppComponent,
     AxisFormComponent,
     AxisGapFormComponent,
-    GridItemComponent,
     GridFormComponent,
     GridViewComponent,
     SidebarComponent,

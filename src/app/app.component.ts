@@ -1,45 +1,24 @@
 // Angular
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray } from '@angular/forms';
-
-// Services
-import { FormsService } from './services';
+import { Component } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 // ngrx
 import { Store } from '@ngrx/store';
 import { AppState } from './store/app.state';
 import * as BuilderSelectors from './store/app.selector';
-import {
-  UpdateGrid,
-  ResetGrid,
-  RemoveColumn,
-  RemoveRow,
-  AddColumn,
-  AddRow
-} from './store/app.action';
 
 // rxjs
-import { take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-
-// models
-import { getInitialGrid, GridModel } from './models';
 
 @Component({
   selector: 'app-root',
   template: `
-    <app-sidebar>
+    <app-sidebar [padContent]="true">
       <div class="title">
         Grid Layout Builder
       </div>
 
-      <app-grid-form
-        [gridForm]="gridForm"
-        (columnAdded)="addColumn()"
-        (columnRemoved)="removeColumn($event)"
-        (rowAdded)="addRow()"
-        (rowRemoved)="removeRow($event)"
-      >
+      <app-grid-form>
       </app-grid-form>
     </app-sidebar>
 
@@ -49,7 +28,7 @@ import { getInitialGrid, GridModel } from './models';
     </div>
 
     <app-sidebar>
-      <div class="heading">CSS:</div>
+      <div class="heading ml">CSS:</div>
 
       <pre>
         <div class="generated-styles">.grid-container &#123;
@@ -65,20 +44,16 @@ import { getInitialGrid, GridModel } from './models';
 </span>&#125;</div>
       </pre>
 
-      <div class="heading">HTML:</div>
+      <div class="heading ml">HTML:</div>
 
       <pre>
         <div class="generated-styles">{{ html$ | async }}</div>
       </pre>
-
-      <sds-button (clickEvent)="resetForm()">
-        Reset
-      </sds-button>
     </app-sidebar>
   `,
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   gridForm: FormGroup;
 
   styles$: Observable<{[key: string]: any}> =
@@ -90,58 +65,6 @@ export class AppComponent implements OnInit {
   html$: Observable<string> =
     this.store.select(BuilderSelectors.selectHTML);
 
-  constructor(
-    private store: Store<AppState>,
-    private formsService: FormsService) {}
-
-  ngOnInit() {
-    this.store.select(BuilderSelectors.selectGrid)
-      .pipe(take(1))
-      .subscribe(grid => {
-        this.createGridForm(grid);
-      });
-  }
-
-  createGridForm(grid: GridModel) {
-    this.gridForm = this.formsService.createGridForm(grid);
-
-    this.gridForm.valueChanges.subscribe(updatedGrid => {
-      // this.store.dispatch(new UpdateGrid(updatedGrid));
-    });
-  }
-
-  // TODO: fix add
-  addColumn() {
-    const columnForms = this.gridForm.get('columns') as FormArray;
-
-    columnForms.push(this.formsService.createAxisForm(
-      { size: '1', unit: 'fr' }
-    ));
-    this.store.dispatch(new AddColumn());
-  }
-
-  addRow() {
-    const rowForms = this.gridForm.get('rows') as FormArray;
-
-    rowForms.push(this.formsService.createAxisForm(
-      { size: '1', unit: 'fr' }
-    ));
-    this.store.dispatch(new AddRow());
-  }
-
-  removeColumn(index: number) {
-    this.store.dispatch(new RemoveColumn(index));
-  }
-
-  removeRow(index: number) {
-    this.store.dispatch(new RemoveRow(index));
-  }
-
-  resetForm() {
-    const defaultGrid = getInitialGrid();
-
-    this.store.dispatch(new ResetGrid(defaultGrid));
-    this.createGridForm(defaultGrid);
-  }
+  constructor(private store: Store<AppState>) {}
 
 }

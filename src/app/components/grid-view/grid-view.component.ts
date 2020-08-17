@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 // ngrx
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/app.state';
+import { AppState } from '../../store/app.state';
 import * as BuilderSelectors from '../../store/app.selector';
 
 // libs
@@ -12,7 +12,7 @@ import { Subject, Observable } from 'rxjs';
 
 // Models
 import { GridModel, GridItemModel } from '../../models';
-import { CreateGridItem } from 'src/app/store/app.action';
+import { CreateGridItem } from '../../store/app.action';
 
 @Component({
   selector: 'app-grid-view',

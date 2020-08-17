@@ -14,20 +14,6 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
 
   switch (action.type) {
     ////////////////////////////////////////////////////////////////////////////////
-    // Update Grid
-    ////////////////////////////////////////////////////////////////////////////////
-
-    case BuilderActions.UPDATE_GRID: {
-      return {
-        ...state,
-        grid: {
-          ...state.grid,
-          ...action.grid
-        }
-      };
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
     // Add Column
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -69,6 +55,42 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
               return getGridItem(state.grid.rows.length + 1, index + 1);
             })
           ]
+        }
+      };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Update Column
+    ////////////////////////////////////////////////////////////////////////////////
+
+    case BuilderActions.UPDATE_COLUMN: {
+      return {
+        ...state,
+        grid: {
+          ...state.grid,
+          columns: state.grid.columns.map((column, index) => {
+            return action.index === index
+              ? action.column
+              : column;
+          })
+        }
+      };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Update Row
+    ////////////////////////////////////////////////////////////////////////////////
+
+    case BuilderActions.UPDATE_ROW: {
+      return {
+        ...state,
+        grid: {
+          ...state.grid,
+          rows: state.grid.rows.map((row, index) => {
+            return action.index === index
+              ? action.row
+              : row;
+          })
         }
       };
     }
@@ -117,6 +139,34 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
                   : {})
               };
             })
+        }
+      };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Update Column Gap
+    ////////////////////////////////////////////////////////////////////////////////
+
+    case BuilderActions.UPDATE_COLUMN_GAP: {
+      return {
+        ...state,
+        grid: {
+          ...state.grid,
+          columnGap: action.columnGap
+        }
+      };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Update Row Gap
+    ////////////////////////////////////////////////////////////////////////////////
+
+    case BuilderActions.UPDATE_ROW_GAP: {
+      return {
+        ...state,
+        grid: {
+          ...state.grid,
+          rowGap: action.rowGap
         }
       };
     }

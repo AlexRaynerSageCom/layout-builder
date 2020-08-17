@@ -1,7 +1,31 @@
 // Angular
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray } from '@angular/forms';
-import { GapUnits } from '../../models';
+
+// Services
+import { FormsService } from '../../services';
+
+// ngrx
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/app.state';
+import * as BuilderSelectors from '../../store/app.selector';
+import {
+  RemoveColumn,
+  RemoveRow,
+  AddColumn,
+  AddRow,
+  ResetGrid,
+  UpdateColumn,
+  UpdateRow,
+  UpdateColumnGap,
+  UpdateRowGap
+} from '../../store/app.action';
+
+// Libs
+import { take } from 'rxjs/operators';
+
+// Models
+import { GridModel, getInitialGrid, AxisModel } from '../../models';
 
 @Component({
   selector: 'app-grid-form',
@@ -23,6 +47,7 @@ import { GapUnits } from '../../models';
         *ngFor="let axisForm of columnForms.controls; let i = index"
         [axisForm]="axisForm"
         (axisRemoved)="removeColumn(i)"
+        (axisChanged)="updateColumn(i, $event)"
       >
       </app-axis-form>
 
@@ -38,6 +63,7 @@ import { GapUnits } from '../../models';
         *ngFor="let axisForm of rowForms.controls; let i = index"
         [axisForm]="axisForm"
         (axisRemoved)="removeRow(i)"
+        (axisChanged)="updateRow(i, $event)"
       >
       </app-axis-form>
 
@@ -48,25 +74,38 @@ import { GapUnits } from '../../models';
       <div class="sub-heading">Row Gap:</div>
       <app-axis-gap-form [axisGapForm]="gridForm.get('rowGap')">
       </app-axis-gap-form>
+
+      <sds-button (clickEvent)="resetForm()">
+        Reset
+      </sds-button>
     </form>
   `,
   styleUrls: ['./grid-form.component.scss']
 })
-export class GridFormComponent {
-  @Input()
+export class GridFormComponent implements OnInit {
   gridForm: FormGroup;
 
-  @Output()
-  columnAdded: EventEmitter<void> = new EventEmitter<void>();
+  constructor(
+    private formsService: FormsService,
+    private store: Store<AppState>) {}
 
-  @Output()
-  columnRemoved: EventEmitter<number> = new EventEmitter<number>();
+  ngOnInit() {
+    this.store.select(BuilderSelectors.selectGrid)
+      .pipe(take(1))
+      .subscribe(grid => this.createGridForm(grid));
+  }
 
-  @Output()
-  rowAdded: EventEmitter<void> = new EventEmitter<void>();
+  createGridForm(grid: GridModel) {
+    this.gridForm = this.formsService.createGridForm(grid);
 
-  @Output()
-  rowRemoved: EventEmitter<number> = new EventEmitter<number>();
+    this.gridForm.get('columnGap').valueChanges.subscribe(value => {
+      this.store.dispatch(new UpdateColumnGap(value));
+    });
+
+    this.gridForm.get('rowGap').valueChanges.subscribe(value => {
+      this.store.dispatch(new UpdateRowGap(value));
+    });
+  }
 
   get columnForms() {
     return this.gridForm.get('columns') as FormArray;
@@ -77,19 +116,37 @@ export class GridFormComponent {
   }
 
   addColumn() {
-    this.columnAdded.emit();
+    const columnForms = this.gridForm.get('columns') as FormArray;
+
+    columnForms.push(this.formsService.createAxisForm(
+      { size: '1', unit: 'fr' }
+    ));
+    this.store.dispatch(new AddColumn());
   }
 
   addRow() {
-    this.rowAdded.emit();
+    const rowForms = this.gridForm.get('rows') as FormArray;
+
+    rowForms.push(this.formsService.createAxisForm(
+      { size: '1', unit: 'fr' }
+    ));
+    this.store.dispatch(new AddRow());
   }
-  
+
+  updateColumn(index: number, column: AxisModel) {
+    this.store.dispatch(new UpdateColumn(index, column));
+  }
+
+  updateRow(index: number, row: AxisModel) {
+    this.store.dispatch(new UpdateRow(index, row));
+  }
+
   removeColumn(index: number) {
     const columnForms = this.gridForm.get('columns') as FormArray;
 
     if (columnForms.length > 1) {
       columnForms.removeAt(index);
-      this.columnRemoved.emit(index);
+      this.store.dispatch(new RemoveColumn(index));
     }
   }
 
@@ -98,7 +155,15 @@ export class GridFormComponent {
 
     if (rowForms.length > 1) {
       rowForms.removeAt(index);
-      this.rowRemoved.emit(index);
+      this.store.dispatch(new RemoveRow(index));
     }
   }
+
+  resetForm() {
+    const defaultGrid = getInitialGrid();
+
+    this.store.dispatch(new ResetGrid(defaultGrid));
+    this.createGridForm(defaultGrid);
+  }
+
 }

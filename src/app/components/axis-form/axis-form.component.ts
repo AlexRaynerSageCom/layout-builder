@@ -1,9 +1,9 @@
 // Angular
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 // Models
-import { Units } from '../../models';
+import { Units, AxisModel } from '../../models';
 
 @Component({
   selector: 'app-axis-form',
@@ -65,14 +65,23 @@ import { Units } from '../../models';
   styleUrls: ['./axis-form.component.scss']
 })
 // TODO: need to set a default minmax when selected
-export class AxisFormComponent {
+export class AxisFormComponent implements OnInit {
   @Input()
   axisForm: FormGroup;
+
+  @Output()
+  axisChanged: EventEmitter<AxisModel> = new EventEmitter<AxisModel>();
 
   @Output()
   axisRemoved: EventEmitter<void> = new EventEmitter<void>();
 
   axisUnits = Units;
+
+  ngOnInit() {
+    this.axisForm.valueChanges.subscribe(value => {
+      this.axisChanged.emit(value);
+    });
+  }
 
   get showSizeInput() {
     return !['auto', 'min-content', 'max-content'].includes(

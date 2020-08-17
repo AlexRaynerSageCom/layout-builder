@@ -1,26 +1,14 @@
 .sidebar {
   position: relative;
-  padding: 16px;
-  height: calc(100% - 32px);
-  width: 250px;
+  height: 100%;
+  width: 282px;
   overflow: auto;
   background-color: #fff;
   box-shadow: 0 10px 20px 0 rgba(0,20,29,0.2), 0 20px 40px 0 rgba(0,20,29,0.1);
 
-  &__toggle {
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    left: 100%;
-    font-size: 1.5em;
-    cursor: pointer;
-    background-color: var(--color-primary);
-
-    &:hover {
-      background-color: var(--color-hover);
-    }
+  &--padded {
+    padding: 16px;
+    height: calc(100% - 32px);
+    width: 250px;
   }
 }

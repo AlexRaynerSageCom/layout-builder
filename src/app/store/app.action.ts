@@ -2,19 +2,7 @@
 import { Action } from '@ngrx/store';
 
 // Models
-import { GridModel, GridItemModel, AxisModel } from '../models';
-
-////////////////////////////////////////////////////////////////////////////////
-// Update Grid
-////////////////////////////////////////////////////////////////////////////////
-
-export const UPDATE_GRID = '[Builder] UPDATE_GRID';
-
-export class UpdateGrid implements Action {
-  readonly type = UPDATE_GRID;
-
-  constructor(public grid: GridModel) {}
-}
+import { GridModel, AxisModel, AxisGapModel } from '../models';
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add Column
@@ -34,6 +22,30 @@ export const ADD_ROW = '[Builder] ADD_ROW';
 
 export class AddRow implements Action {
   readonly type = ADD_ROW;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Update Column
+////////////////////////////////////////////////////////////////////////////////
+
+export const UPDATE_COLUMN = '[Builder] UPDATE_COLUMN';
+
+export class UpdateColumn implements Action {
+  readonly type = UPDATE_COLUMN;
+
+  constructor(public index: number, public column: AxisModel) {}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Update Row
+////////////////////////////////////////////////////////////////////////////////
+
+export const UPDATE_ROW = '[Builder] UPDATE_ROW';
+
+export class UpdateRow implements Action {
+  readonly type = UPDATE_ROW;
+
+  constructor(public index: number, public row: AxisModel) {}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -61,6 +73,30 @@ export class RemoveRow implements Action {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Update Column Gap
+////////////////////////////////////////////////////////////////////////////////
+
+export const UPDATE_COLUMN_GAP = '[Builder] UPDATE_COLUMN_GAP';
+
+export class UpdateColumnGap implements Action {
+  readonly type = UPDATE_COLUMN_GAP;
+
+  constructor(public columnGap: AxisGapModel) {}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Update Row Gap
+////////////////////////////////////////////////////////////////////////////////
+
+export const UPDATE_ROW_GAP = '[Builder] UPDATE_ROW_GAP';
+
+export class UpdateRowGap implements Action {
+  readonly type = UPDATE_ROW_GAP;
+
+  constructor(public rowGap: AxisGapModel) {}
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Reset Grid
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -85,10 +121,13 @@ export class CreateGridItem implements Action {
 }
 
 export type All =
-  UpdateGrid
-  | AddColumn
+  AddColumn
   | AddRow
+  | UpdateColumn
+  | UpdateRow
   | RemoveColumn
   | RemoveRow
+  | UpdateColumnGap
+  | UpdateRowGap
   | ResetGrid
   | CreateGridItem;
