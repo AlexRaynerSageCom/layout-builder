@@ -17,6 +17,30 @@ export class UpdateGrid implements Action {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Remove Column
+////////////////////////////////////////////////////////////////////////////////
+
+export const REMOVE_COLUMN = '[Builder] REMOVE_COLUMN';
+
+export class RemoveColumn implements Action {
+  readonly type = REMOVE_COLUMN;
+
+  constructor(public index: number) {}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Remove Row
+////////////////////////////////////////////////////////////////////////////////
+
+export const REMOVE_ROW = '[Builder] REMOVE_ROW';
+
+export class RemoveRow implements Action {
+  readonly type = REMOVE_ROW;
+
+  constructor(public index: number) {}
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Reset Grid
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -29,18 +53,20 @@ export class ResetGrid implements Action {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Update Grid Item
+// Create Grid Item
 ////////////////////////////////////////////////////////////////////////////////
 
-export const UPDATE_GRID_ITEM = '[Builder] UPDATE_GRID_ITEM';
+export const CREATE_GRID_ITEM = '[Builder] CREATE_GRID_ITEM';
 
-export class UpdateGridItem implements Action {
-  readonly type = UPDATE_GRID_ITEM;
+export class CreateGridItem implements Action {
+  readonly type = CREATE_GRID_ITEM;
 
-  constructor(public index: number) {}
+  constructor(public row: number, public column: number) {}
 }
 
 export type All =
   UpdateGrid
+  | RemoveColumn
+  | RemoveRow
   | ResetGrid
-  | UpdateGridItem;
+  | CreateGridItem;

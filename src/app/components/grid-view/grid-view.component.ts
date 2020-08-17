@@ -12,7 +12,7 @@ import { Subject, Observable } from 'rxjs';
 
 // Models
 import { GridModel, GridItemModel } from '../../models';
-import { UpdateGridItem } from 'src/app/store/app.action';
+import { CreateGridItem } from 'src/app/store/app.action';
 
 @Component({
   selector: 'app-grid-view',
@@ -27,7 +27,7 @@ import { UpdateGridItem } from 'src/app/store/app.action';
         class="grid__item"
         [class.grid__item--generated]="item.generated"
         style="grid-area: {{item.rowStart}} / {{item.columnStart}} / {{item.rowEnd}} / {{item.columnEnd}}"
-        (click)="item.generated && addItem(i)"
+        (click)="item.generated && addItem(item.rowStart, item.columnStart)"
       >
         <ng-container *ngIf="!item.generated; else generated">
           item
@@ -44,6 +44,7 @@ import { UpdateGridItem } from 'src/app/store/app.action';
   `,
   styleUrls: ['./grid-view.component.scss']
 })
+// TODO: add ability to delete items
 export class GridViewComponent implements OnInit, OnDestroy {
   grid: GridModel;
 
@@ -65,8 +66,8 @@ export class GridViewComponent implements OnInit, OnDestroy {
       });
   }
 
-  addItem(index: number) {
-    this.store.dispatch(new UpdateGridItem(index));
+  addItem(row: number, column: number) {
+    this.store.dispatch(new CreateGridItem(row, column));
   }
 
   ngOnDestroy() {

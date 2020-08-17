@@ -10,7 +10,7 @@ import { GapUnits } from '../../models';
       *ngIf="gridForm"
       [formGroup]="gridForm"
     >
-      <div class="sub-heading">Columns:</div>
+      <div class="sub-heading">Grid Columns:</div>
 
       <sds-button
         class="add-button"
@@ -26,7 +26,7 @@ import { GapUnits } from '../../models';
       >
       </app-axis-form>
 
-      <div class="sub-heading">Rows:</div>
+      <div class="sub-heading">Grid Rows:</div>
       <sds-button
         class="add-button"
         type="button"
@@ -60,7 +60,13 @@ export class GridFormComponent {
   columnAdded: EventEmitter<void> = new EventEmitter<void>();
 
   @Output()
+  columnRemoved: EventEmitter<number> = new EventEmitter<number>();
+
+  @Output()
   rowAdded: EventEmitter<void> = new EventEmitter<void>();
+
+  @Output()
+  rowRemoved: EventEmitter<number> = new EventEmitter<number>();
 
   get columnForms() {
     return this.gridForm.get('columns') as FormArray;
@@ -84,6 +90,7 @@ export class GridFormComponent {
 
     if (columnForms.length > 1) {
       columnForms.removeAt(index);
+      this.columnRemoved.emit(index);
     }
   }
 
@@ -92,6 +99,7 @@ export class GridFormComponent {
 
     if (rowForms.length > 1) {
       rowForms.removeAt(index);
+      this.rowRemoved.emit(index);
     }
   }
 }

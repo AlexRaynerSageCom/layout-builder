@@ -6,9 +6,9 @@ export interface GridItemModel {
   rowEnd: number;
 }
 
-export const getInitialGridItem = (rowStart, colStart): GridItemModel => {
+export const getGridItem = (rowStart, colStart, generated = true): GridItemModel => {
   return {
-    generated: true,
+    generated,
     columnStart: colStart,
     columnEnd: colStart + 1,
     rowStart,

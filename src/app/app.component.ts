@@ -9,11 +9,18 @@ import { FormsService } from './services';
 import { Store } from '@ngrx/store';
 import { AppState } from './store/app.state';
 import * as BuilderSelectors from './store/app.selector';
-import { UpdateGrid, ResetGrid } from './store/app.action';
+import {
+  UpdateGrid,
+  ResetGrid,
+  RemoveColumn,
+  RemoveRow
+} from './store/app.action';
 
 // rxjs
 import { take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+
+// models
 import { getInitialGrid, GridModel } from './models';
 
 @Component({
@@ -27,7 +34,9 @@ import { getInitialGrid, GridModel } from './models';
       <app-grid-form
         [gridForm]="gridForm"
         (columnAdded)="addColumn()"
+        (columnRemoved)="removeColumn($event)"
         (rowAdded)="addRow()"
+        (rowRemoved)="removeRow($event)"
       >
       </app-grid-form>
     </app-sidebar>
@@ -117,6 +126,14 @@ export class AppComponent implements OnInit {
     rowForms.push(this.formsService.createAxisForm(
       { size: '1', unit: 'fr' }
     ));
+  }
+
+  removeColumn(index: number) {
+    this.store.dispatch(new RemoveColumn(index));
+  }
+
+  removeRow(index: number) {
+    this.store.dispatch(new RemoveRow(index));
   }
 
   resetForm() {
