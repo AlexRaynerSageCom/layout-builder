@@ -17,7 +17,13 @@
     align-items: center;
     justify-content: center;
     background-color: #fff;
-    cursor: default;
+    cursor: pointer;
+
+    &:hover {
+      .icon {
+        display: block;
+      }
+    }
   
     &::before {
       content: "";
@@ -31,9 +37,7 @@
       box-shadow: inset 0 0 0 2px var(--color-focus);
     }
   
-    &--generated {
-      cursor: pointer;
-  
+    &--generated {  
       &::before {
         outline: 1px dashed #fff;
         box-shadow: none;
@@ -41,14 +45,10 @@
 
       &:hover {
         background-color: var(--color-slate-95);
-    
-        .add-icon {
-          display: block;
-        }
       }
     }
   
-    .add-icon {
+    .icon {
       font-size: 1.4em;
       display: none;
     }

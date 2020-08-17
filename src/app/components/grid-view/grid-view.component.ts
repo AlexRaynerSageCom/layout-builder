@@ -12,7 +12,7 @@ import { Subject, Observable } from 'rxjs';
 
 // Models
 import { GridModel, GridItemModel } from '../../models';
-import { CreateGridItem } from '../../store/app.action';
+import { CreateGridItem, RemoveGridItem } from '../../store/app.action';
 
 @Component({
   selector: 'app-grid-view',
@@ -27,18 +27,13 @@ import { CreateGridItem } from '../../store/app.action';
         class="grid__item"
         [class.grid__item--generated]="item.generated"
         style="grid-area: {{item.rowStart}} / {{item.columnStart}} / {{item.rowEnd}} / {{item.columnEnd}}"
-        (click)="item.generated && addItem(item.rowStart, item.columnStart)"
+        (click)="editItem(item)"
       >
-        <ng-container *ngIf="!item.generated; else generated">
-          item
-        </ng-container>
-
-        <ng-template #generated>
-          <sds-icon
-            class="add-icon"
-            iconType="plus"
-          ></sds-icon>
-        </ng-template>
+        <sds-icon
+          class="icon"
+          [type]="item.generated ? 'none' : 'error'"
+          [iconType]="item.generated ? 'plus' : 'close'"
+        ></sds-icon>
       </div>
     </div>
   `,
@@ -66,8 +61,12 @@ export class GridViewComponent implements OnInit, OnDestroy {
       });
   }
 
-  addItem(row: number, column: number) {
-    this.store.dispatch(new CreateGridItem(row, column));
+  editItem(item: GridItemModel) {
+    const action = item.generated
+      ? new CreateGridItem(item.rowStart, item.columnStart)
+      : new RemoveGridItem(item.rowStart, item.columnStart);
+
+    this.store.dispatch(action);
   }
 
   ngOnDestroy() {

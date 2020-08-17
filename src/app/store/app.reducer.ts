@@ -192,10 +192,29 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
         grid: {
           ...state.grid,
           items: [
-            getGridItem(action.row, action.column, false),
             ...state.grid.items.filter(item => {
-              return item.rowStart !== action.row || item.columnStart !== action.column;
-            })
+              return !(item.rowStart === action.row && item.columnStart === action.column);
+            }),
+            getGridItem(action.row, action.column, false)
+          ]
+        }
+      };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Remove Grid Item
+    ////////////////////////////////////////////////////////////////////////////////
+
+    case BuilderActions.REMOVE_GRID_ITEM: {
+      return {
+        ...state,
+        grid: {
+          ...state.grid,
+          items: [
+            ...state.grid.items.filter(item => {
+              return !(item.rowStart === action.row && item.columnStart === action.column);
+            }),
+            getGridItem(action.row, action.column)
           ]
         }
       };

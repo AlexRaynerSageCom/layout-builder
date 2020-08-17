@@ -120,6 +120,18 @@ export class CreateGridItem implements Action {
   constructor(public row: number, public column: number) {}
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// Remove Grid Item
+////////////////////////////////////////////////////////////////////////////////
+
+export const REMOVE_GRID_ITEM = '[Builder] REMOVE_GRID_ITEM';
+
+export class RemoveGridItem implements Action {
+  readonly type = REMOVE_GRID_ITEM;
+
+  constructor(public row: number, public column: number) {}
+}
+
 export type All =
   AddColumn
   | AddRow
@@ -130,4 +142,5 @@ export type All =
   | UpdateColumnGap
   | UpdateRowGap
   | ResetGrid
-  | CreateGridItem;
+  | CreateGridItem
+  | RemoveGridItem;
