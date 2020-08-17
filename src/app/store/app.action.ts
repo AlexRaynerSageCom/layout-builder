@@ -29,18 +29,18 @@ export class ResetGrid implements Action {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Add Grid Item
+// Update Grid Item
 ////////////////////////////////////////////////////////////////////////////////
 
-export const ADD_GRID_ITEM = '[Builder] ADD_GRID_ITEM';
+export const UPDATE_GRID_ITEM = '[Builder] UPDATE_GRID_ITEM';
 
-export class AddGridItem implements Action {
-  readonly type = ADD_GRID_ITEM;
+export class UpdateGridItem implements Action {
+  readonly type = UPDATE_GRID_ITEM;
 
-  constructor(public gridItem: GridItemModel) {}
+  constructor(public index: number) {}
 }
 
 export type All =
   UpdateGrid
   | ResetGrid
-  | AddGridItem;
+  | UpdateGridItem;

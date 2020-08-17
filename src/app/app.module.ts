@@ -21,6 +21,7 @@ import { AppComponent } from './app.component';
 import {
   AxisFormComponent,
   AxisGapFormComponent,
+  GridItemComponent,
   GridFormComponent,
   GridViewComponent,
   SidebarComponent
@@ -61,6 +62,7 @@ import { CamelToKebabPipe } from './pipes';
     AppComponent,
     AxisFormComponent,
     AxisGapFormComponent,
+    GridItemComponent,
     GridFormComponent,
     GridViewComponent,
     SidebarComponent,

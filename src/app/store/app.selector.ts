@@ -61,9 +61,10 @@ export const selectHTML = createSelector(
   (grid: GridModel, items: GridItemModel[]) => {
     let html = `<div class="grid-container">`;
 
-    items.forEach((item, index) => {
-      html += `\n  <div class="item-${index}"></div>`;
-    });
+    items.filter(item => !item.generated)
+      .forEach((item, index) => {
+        html += `\n  <div class="item-${index}"></div>`;
+      });
 
     return html += `\n</div>`;
   }
@@ -72,10 +73,11 @@ export const selectHTML = createSelector(
 export const selectGridItemStyles = createSelector(
   selectGridItems,
   (gridItems: GridItemModel[]) => {
-    return gridItems.map(item => {
-      return {
-        gridArea: `${item.rowStart} / ${item.columnStart} / ${item.rowEnd} / ${item.columnEnd}`
-      };
-    });
+    return gridItems.filter(item => !item.generated)
+      .map(item => {
+        return {
+          gridArea: `${item.rowStart} / ${item.columnStart} / ${item.rowEnd} / ${item.columnEnd}`
+        };
+      });
   }
 );

@@ -42,14 +42,20 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
     // Add Grid Item
     ////////////////////////////////////////////////////////////////////////////////
 
-    case BuilderActions.ADD_GRID_ITEM: {
+    case BuilderActions.UPDATE_GRID_ITEM: {
       return {
         ...state,
         grid: {
           ...state.grid,
           items: [
-            ...state.grid.items,
-            action.gridItem
+            ...state.grid.items.map((item, index) => {
+              return {
+                ...item,
+                generated: index === action.index
+                  ? false
+                  : item.generated
+              };
+            })
           ]
         }
       };

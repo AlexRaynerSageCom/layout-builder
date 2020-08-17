@@ -1,15 +1,17 @@
 export interface GridItemModel {
+  generated: boolean;
   columnStart: number;
   columnEnd: number;
   rowStart: number;
   rowEnd: number;
 }
 
-export const getInitialGridItem = (): GridItemModel => {
+export const getInitialGridItem = (rowStart, colStart): GridItemModel => {
   return {
-    columnStart: 1,
-    columnEnd: 1,
-    rowStart: 1,
-    rowEnd: 1
+    generated: true,
+    columnStart: colStart,
+    columnEnd: colStart + 1,
+    rowStart,
+    rowEnd: rowStart + 1
   };
 };
