@@ -13,7 +13,9 @@ import {
   UpdateGrid,
   ResetGrid,
   RemoveColumn,
-  RemoveRow
+  RemoveRow,
+  AddColumn,
+  AddRow
 } from './store/app.action';
 
 // rxjs
@@ -96,11 +98,7 @@ export class AppComponent implements OnInit {
     this.store.select(BuilderSelectors.selectGrid)
       .pipe(take(1))
       .subscribe(grid => {
-        this.gridForm = this.formsService.createGridForm(grid);
-
-        this.gridForm.valueChanges.subscribe(updatedGrid => {
-          this.store.dispatch(new UpdateGrid(updatedGrid));
-        });
+        this.createGridForm(grid);
       });
   }
 
@@ -108,16 +106,18 @@ export class AppComponent implements OnInit {
     this.gridForm = this.formsService.createGridForm(grid);
 
     this.gridForm.valueChanges.subscribe(updatedGrid => {
-      this.store.dispatch(new UpdateGrid(updatedGrid));
+      // this.store.dispatch(new UpdateGrid(updatedGrid));
     });
   }
 
+  // TODO: fix add
   addColumn() {
     const columnForms = this.gridForm.get('columns') as FormArray;
 
     columnForms.push(this.formsService.createAxisForm(
       { size: '1', unit: 'fr' }
     ));
+    this.store.dispatch(new AddColumn());
   }
 
   addRow() {
@@ -126,6 +126,7 @@ export class AppComponent implements OnInit {
     rowForms.push(this.formsService.createAxisForm(
       { size: '1', unit: 'fr' }
     ));
+    this.store.dispatch(new AddRow());
   }
 
   removeColumn(index: number) {

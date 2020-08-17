@@ -4,7 +4,7 @@ import * as BuilderActions from './app.action';
 
 // Models
 import { AppState, BuilderState } from './app.state';
-import { getInitialGrid, getGridItem } from '../models';
+import { getInitialGrid, getGridItem, getInitialAxis } from '../models';
 
 const defaultBuilderState: BuilderState = {
   grid: getInitialGrid()
@@ -28,6 +28,52 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
     }
 
     ////////////////////////////////////////////////////////////////////////////////
+    // Add Column
+    ////////////////////////////////////////////////////////////////////////////////
+
+    case BuilderActions.ADD_COLUMN: {
+      return {
+        ...state,
+        grid: {
+          ...state.grid,
+          columns: [
+            ...state.grid.columns,
+            getInitialAxis()
+          ],
+          items: [
+            ...state.grid.items,
+            ...Array(state.grid.rows.length).fill(null).map((value, index) => {
+              return getGridItem(index + 1, state.grid.columns.length + 1);
+            })
+          ]
+        }
+      };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Add Row
+    ////////////////////////////////////////////////////////////////////////////////
+
+    case BuilderActions.ADD_ROW: {
+      return {
+        ...state,
+        grid: {
+          ...state.grid,
+          rows: [
+            ...state.grid.rows,
+            getInitialAxis()
+          ],
+          items: [
+            ...state.grid.items,
+            ...Array(state.grid.columns.length).fill(null).map((value, index) => {
+              return getGridItem(state.grid.rows.length + 1, index + 1);
+            })
+          ]
+        }
+      };
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
     // Remove Column
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -36,6 +82,7 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
         ...state,
         grid: {
           ...state.grid,
+          columns: state.grid.columns.filter((column, index) => index !== action.index),
           items: state.grid.items
             .filter(item => item.columnStart - 1 !== action.index)
             .map(item => {
@@ -59,6 +106,7 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
         ...state,
         grid: {
           ...state.grid,
+          rows: state.grid.rows.filter((row, index) => index !== action.index),
           items: state.grid.items
             .filter(item => item.rowStart - 1 !== action.index)
             .map(item => {

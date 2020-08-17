@@ -83,8 +83,7 @@ export class GridFormComponent {
   addRow() {
     this.rowAdded.emit();
   }
-
-  // TODO: removing a row/column should remove any items in that row/column
+  
   removeColumn(index: number) {
     const columnForms = this.gridForm.get('columns') as FormArray;
 
