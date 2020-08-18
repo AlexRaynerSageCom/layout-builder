@@ -39,6 +39,7 @@ import { GridModel, getInitialGrid, AxisModel } from '../../models';
       <sds-button
         class="add-button"
         type="button"
+        size="small"
         (clickEvent)="addColumn()"
       >
         Add
@@ -55,6 +56,7 @@ import { GridModel, getInitialGrid, AxisModel } from '../../models';
       <sds-button
         class="add-button"
         type="button"
+        size="small"
         (clickEvent)="addRow()"
       >
         Add
@@ -75,7 +77,10 @@ import { GridModel, getInitialGrid, AxisModel } from '../../models';
       <app-axis-gap-form [axisGapForm]="gridForm.get('rowGap')">
       </app-axis-gap-form>
 
-      <sds-button (clickEvent)="resetForm()">
+      <sds-button
+        size="small"
+        (clickEvent)="resetForm()"
+      >
         Reset
       </sds-button>
     </form>
