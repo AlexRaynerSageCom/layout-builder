@@ -20,13 +20,14 @@ import { Units, AxisModel } from '../../models';
           formControlName="size"
           placeholderText="min, max"
           errorType="error"
+          size="small"
           [errors]="isFieldInvalid(axisForm, 'size')"
         >
         </sds-input-text>
 
         <ng-template #numberInput>
           <input
-            class="axis-form__size"
+            class="axis-form__size input--small"
             [class.input-error]="isFieldInvalid(axisForm, 'size')"
             type="number"
             placeholder="size"
@@ -42,6 +43,7 @@ import { Units, AxisModel } from '../../models';
         formControlName="unit"
         placeholder="unit"
         errorType="error"
+        size="small"
         [errors]="isFieldInvalid(axisForm, 'unit')"
       >
         <sds-dropdown-option
@@ -55,6 +57,7 @@ import { Units, AxisModel } from '../../models';
       <sds-button
         class="axis-form__delete"
         buttonType="tertiary"
+        size="small"
         [destructive]="true"
         (clickEvent)="remove()"
       >
@@ -77,14 +80,44 @@ export class AxisFormComponent implements OnInit {
 
   axisUnits = Units;
 
+  unitsWithNoSize = ['auto', 'min-content', 'max-content'];
+
   ngOnInit() {
     this.axisForm.valueChanges.subscribe(value => {
       this.axisChanged.emit(value);
     });
+
+    this.axisForm.get('unit').valueChanges.subscribe(value => {
+      // do nothing if there is no size associated to unit
+      if (this.unitsWithNoSize.includes(value)) {
+        return;
+      }
+
+      let sizeValue: string;
+
+      switch (value) {
+        case 'fr':
+        default:
+          sizeValue = '1';
+          break;
+        case '%':
+        case 'em':
+          sizeValue = '10';
+          break;
+        case 'px':
+          sizeValue = '300';
+          break;
+        case 'minmax':
+          sizeValue = '50px, 100px';
+          break;
+      }
+
+      this.axisForm.get('size').patchValue(sizeValue, {emitEvent: false});
+    });
   }
 
   get showSizeInput() {
-    return !['auto', 'min-content', 'max-content'].includes(
+    return !this.unitsWithNoSize.includes(
       this.axisForm.get('unit').value
     );
   }

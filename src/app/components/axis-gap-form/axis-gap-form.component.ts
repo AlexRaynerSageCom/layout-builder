@@ -14,6 +14,7 @@ import { GapUnits } from '../../models';
       [formGroup]="axisGapForm"
     >
       <input
+        class="input--small"
         [class.input-error]="isFieldInvalid(axisGapForm, 'size')"
         type="number"
         placeholder="size"
@@ -24,6 +25,7 @@ import { GapUnits } from '../../models';
       <sds-dropdown
         formControlName="unit"
         placeholder="unit"
+        size="small"
       >
         <sds-dropdown-option
           *ngFor="let option of gapOptions"

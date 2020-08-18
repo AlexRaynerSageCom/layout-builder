@@ -15,15 +15,17 @@ html, body {
   outline: 3px solid #ffb500;
 }
 
-input {
-  padding: 0px 11px;
-  height: 40px;
+input[type="number"] {
   background-color: #fff;
   border: 1px solid #668592;
   box-sizing: border-box;
+  width: 100%;
+  padding: 0px 11px;
+  height: 40px;
 
-  &[type="number"] {
-    width: 100%;
+  &.input--small {
+    padding: 0px 8px;
+    height: 32px;
   }
 }
 
