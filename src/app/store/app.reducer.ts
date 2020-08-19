@@ -22,6 +22,38 @@ const generateItemsToFillGrid = (item: GridItemModel) => {
   return items;
 };
 
+const adjustGridItemsForColumn = (axisIndex: number, items: GridItemModel[]) => {
+  // Filter if item is 1 column wide and matches the index being removed
+  return items.filter(item => !(item.columnStart - 1 === axisIndex && item.columnEnd - item.columnStart === 1))
+    .map(item => {
+      return {
+        ...item,
+        ...(axisIndex < item.columnStart - 1
+          ? {columnStart: item.columnStart - 1, columnEnd: item.columnEnd - 1}
+          : {}),
+        ...(axisIndex >= item.columnStart - 1 && axisIndex < item.columnEnd - 1
+          ? {columnEnd: item.columnEnd - 1}
+          : {})
+      };
+    });
+};
+
+const adjustGridItemsForRow = (axisIndex: number, items: GridItemModel[]) => {
+  // Filter if item is 1 column wide and matches the index being removed
+  return items.filter(item => !(item.rowStart - 1 === axisIndex && item.rowEnd - item.rowStart === 1))
+    .map(item => {
+      return {
+        ...item,
+        ...(axisIndex < item.rowStart - 1
+          ? {rowStart: item.rowStart - 1, rowEnd: item.rowEnd - 1}
+          : {}),
+        ...(axisIndex >= item.rowStart - 1 && axisIndex < item.rowEnd - 1
+          ? {rowEnd: item.rowEnd - 1}
+          : {})
+      };
+    });
+};
+
 export function builderReducer(state: BuilderState = defaultBuilderState, action: BuilderActions.All): BuilderState {
 
   switch (action.type) {
@@ -111,23 +143,13 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
     // Remove Column
     ////////////////////////////////////////////////////////////////////////////////
 
-    // TODO: update custom items when axis is deleted
     case BuilderActions.REMOVE_COLUMN: {
       return {
         ...state,
         grid: {
           ...state.grid,
           columns: state.grid.columns.filter((column, index) => index !== action.index),
-          items: state.grid.items
-            .filter(item => item.columnStart - 1 !== action.index)
-            .map(item => {
-              return {
-                ...item,
-                ...(action.index < item.columnStart - 1
-                  ? {columnStart: item.columnStart - 1, columnEnd: item.columnEnd - 1}
-                  : {})
-              };
-            })
+          items: adjustGridItemsForColumn(action.index, state.grid.items)
         }
       };
     }
@@ -142,16 +164,7 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
         grid: {
           ...state.grid,
           rows: state.grid.rows.filter((row, index) => index !== action.index),
-          items: state.grid.items
-            .filter(item => item.rowStart - 1 !== action.index)
-            .map(item => {
-              return {
-                ...item,
-                ...(action.index < item.rowStart - 1
-                  ? {rowStart: item.rowStart - 1, rowEnd: item.rowEnd - 1}
-                  : {})
-              };
-            })
+          items: adjustGridItemsForRow(action.index, state.grid.items)
         }
       };
     }

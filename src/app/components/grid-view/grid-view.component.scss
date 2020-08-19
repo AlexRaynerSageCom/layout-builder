@@ -34,6 +34,7 @@
       right: 0;
       display: block;
       pointer-events: none;
+      outline: 3px solid var(--color-focus);
     }
   
     &--generated {
