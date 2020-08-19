@@ -39,7 +39,6 @@ import { CreateGridItem, RemoveGridItem } from '../../store/app.action';
   `,
   styleUrls: ['./grid-view.component.scss']
 })
-// TODO: add ability to delete items
 export class GridViewComponent implements OnInit, OnDestroy {
   grid: GridModel;
 

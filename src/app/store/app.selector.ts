@@ -33,7 +33,6 @@ const createAxisTemplateStyle = (axis: AxisModel) => {
   }
 };
 
-// TODO: make this a service/utils of some type
 export const selectGridStyle = createSelector(
   selectGrid,
   (grid: GridModel) => {
