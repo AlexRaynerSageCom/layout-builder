@@ -38,6 +38,7 @@ import { CreateGridItem, RemoveGridItem } from '../../store/app.action';
         (click)="!item.generated && removeItem(item)"
       >
         <sds-icon
+          *ngIf="!mouseHeld"
           class="icon"
           [type]="item.generated ? 'none' : 'error'"
           [iconType]="item.generated ? 'plus' : 'close'"

@@ -38,6 +38,7 @@
   
     &--generated {
       background-color: unset;
+      cursor: cell;
 
       &::before {
         outline: 1px dashed #fff;
