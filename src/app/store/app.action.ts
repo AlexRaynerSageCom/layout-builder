@@ -2,7 +2,7 @@
 import { Action } from '@ngrx/store';
 
 // Models
-import { GridModel, AxisModel, AxisGapModel } from '../models';
+import { GridModel, AxisModel, AxisGapModel, GridItemModel } from '../models';
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add Column
@@ -117,7 +117,7 @@ export const CREATE_GRID_ITEM = '[Builder] CREATE_GRID_ITEM';
 export class CreateGridItem implements Action {
   readonly type = CREATE_GRID_ITEM;
 
-  constructor(public row: number, public column: number) {}
+  constructor(public item: GridItemModel) {}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -129,7 +129,7 @@ export const REMOVE_GRID_ITEM = '[Builder] REMOVE_GRID_ITEM';
 export class RemoveGridItem implements Action {
   readonly type = REMOVE_GRID_ITEM;
 
-  constructor(public row: number, public column: number) {}
+  constructor(public item: GridItemModel) {}
 }
 
 export type All =

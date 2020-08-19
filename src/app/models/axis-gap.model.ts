@@ -8,5 +8,5 @@ export interface AxisGapModel {
 }
 
 export const getInitialAxisGap = (): AxisGapModel => {
-  return { size: 1, unit: 'px' };
+  return { size: 10, unit: 'px' };
 };

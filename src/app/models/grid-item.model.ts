@@ -6,12 +6,12 @@ export interface GridItemModel {
   rowEnd: number;
 }
 
-export const getGridItem = (rowStart, colStart, generated = true): GridItemModel => {
+export const getGridItem = (rowStart, colStart, generated = true, rowEnd?, colEnd?): GridItemModel => {
   return {
     generated,
     columnStart: colStart,
-    columnEnd: colStart + 1,
+    columnEnd: colEnd ?? colStart + 1,
     rowStart,
-    rowEnd: rowStart + 1
+    rowEnd: rowEnd ?? rowStart + 1
   };
 };

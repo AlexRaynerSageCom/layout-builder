@@ -4,10 +4,22 @@ import * as BuilderActions from './app.action';
 
 // Models
 import { AppState, BuilderState } from './app.state';
-import { getInitialGrid, getGridItem, getInitialAxis } from '../models';
+import { getInitialGrid, getGridItem, getInitialAxis, GridItemModel } from '../models';
 
 const defaultBuilderState: BuilderState = {
   grid: getInitialGrid()
+};
+
+const generateItemsToFillGrid = (item: GridItemModel) => {
+  const items = [];
+
+  for (let row = item.rowStart; row < item.rowEnd; row++) {
+    for (let col = item.columnStart; col < item.columnEnd; col++) {
+      items.push(getGridItem(row, col, true, row + 1, col + 1));
+    }
+  }
+
+  return items;
 };
 
 export function builderReducer(state: BuilderState = defaultBuilderState, action: BuilderActions.All): BuilderState {
@@ -99,6 +111,7 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
     // Remove Column
     ////////////////////////////////////////////////////////////////////////////////
 
+    // TODO: update custom items when axis is deleted
     case BuilderActions.REMOVE_COLUMN: {
       return {
         ...state,
@@ -193,9 +206,13 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
           ...state.grid,
           items: [
             ...state.grid.items.filter(item => {
-              return !(item.rowStart === action.row && item.columnStart === action.column);
+              // Remove all existing items that intersect the new item
+              return !(item.rowStart >= action.item.rowStart && item.rowStart <= action.item.rowEnd
+                && item.rowEnd >= action.item.rowStart && item.rowEnd <= action.item.rowEnd
+                && item.columnStart >= action.item.columnStart && item.columnStart <= action.item.columnEnd
+                && item.columnEnd >= action.item.columnStart && item.columnEnd <= action.item.columnEnd);
             }),
-            getGridItem(action.row, action.column, false)
+            action.item
           ]
         }
       };
@@ -205,16 +222,20 @@ export function builderReducer(state: BuilderState = defaultBuilderState, action
     // Remove Grid Item
     ////////////////////////////////////////////////////////////////////////////////
 
+    // TODO: cover overlapping items
     case BuilderActions.REMOVE_GRID_ITEM: {
       return {
         ...state,
         grid: {
           ...state.grid,
           items: [
+            // fill the array with items to replace the one removed
+            ...generateItemsToFillGrid(action.item),
+            // Remove the item from the array
             ...state.grid.items.filter(item => {
-              return !(item.rowStart === action.row && item.columnStart === action.column);
-            }),
-            getGridItem(action.row, action.column)
+              return !(item.rowStart === action.item.rowStart && item.columnStart === action.item.columnStart
+                && item.rowEnd === action.item.rowEnd && item.columnEnd === action.item.columnEnd);
+            })
           ]
         }
       };
